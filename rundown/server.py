@@ -51,7 +51,8 @@ def run_engine(script, *args, timeout=900):
     """Run one of the batch scripts (season fetch, standings, digest, preview) inside the data folder."""
     try:
         r = subprocess.run([sys.executable, os.path.join(ENGINE, script), *args], cwd=DATA,
-                           capture_output=True, text=True, timeout=timeout)
+                           capture_output=True, text=True, encoding='utf-8', errors='replace', timeout=timeout,
+                           env={**os.environ, 'PYTHONUTF8': '1'})   # Windows: player names with accents
         if r.returncode != 0:
             log('engine step failed:', script, (r.stderr or '')[-300:])
         return r.returncode == 0
