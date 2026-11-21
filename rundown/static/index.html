@@ -264,6 +264,67 @@ footer p{margin:0;max-width:60em}
 @media (max-width:900px){[data-style="arena"] .pv{grid-template-columns:150px minmax(0,1fr)}[data-style="arena"] .pv .tm{font-size:28px}}
 @media (max-width:560px){[data-style="arena"] .pv{grid-template-columns:minmax(0,1fr)}[data-style="arena"] header{padding:12px 10px}}
 
+/* watch-now bar + reasons */
+#watchnow[hidden]{display:none}
+.wn{display:flex;flex-wrap:wrap;align-items:center;gap:8px 16px;width:100%;text-align:left;background:var(--surface);color:var(--ink);border:2px solid var(--accent);padding:10px 14px;cursor:pointer;font:600 14px var(--body)}
+.wn:hover{background:#000}
+.wnl{display:inline-flex;align-items:center;gap:8px;font:800 12px var(--body);letter-spacing:.12em;text-transform:uppercase;color:#000;background:var(--accent);padding:3px 9px}
+.wnl i{width:8px;height:8px;background:#C81E0A;border-radius:50%}
+.wng{display:inline-flex;align-items:center;gap:8px;font-weight:700;white-space:nowrap}
+.wng .num{font-size:20px;color:var(--accent)}
+.wnd{color:var(--accent);font-weight:600}
+.wn .go{margin-left:auto;font:800 12px var(--body);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.tvl{font:600 12.5px var(--body);color:var(--muted)}
+.tvl b{color:var(--ink);font-weight:700}
+.tvl .nat{color:var(--accent)}
+.whyl{font:700 13.5px var(--body);color:var(--accent)}
+.tz{display:block;font:700 11px var(--body);letter-spacing:.1em;color:var(--muted);margin-top:6px}
+@media (max-width:560px){.wn .go{display:none}}
+@media (prefers-reduced-motion:no-preference){.wnl i{animation:pulse 1s infinite}}
+/* ---------- fan-mode effects ---------- */
+body.tk-on #toasts{top:calc(env(safe-area-inset-top,0px) + var(--tkh,150px) + 16px)}
+#takeover{position:fixed;left:0;right:0;top:calc(env(safe-area-inset-top,0px) + 8px);z-index:35;display:flex;justify-content:center;pointer-events:none;padding-inline:max(10px,env(safe-area-inset-left,0px))}
+.tko{pointer-events:auto;cursor:pointer;width:min(760px,100%);background:#000;color:var(--ink);border:3px solid var(--accent);padding:16px 20px 14px;position:relative;overflow:hidden;text-align:center}
+.tko::before,.tko::after{content:"";position:absolute;left:0;right:0;height:6px;background:repeating-linear-gradient(90deg,var(--accent) 0 8px,transparent 8px 16px)}
+.tko::before{top:0}.tko::after{bottom:0}
+.tko .big{display:block;white-space:nowrap;font:900 min(58px,calc((min(760px,100vw) - 70px) / (var(--n,12) * .78)))/1.05 var(--display);letter-spacing:.04em;color:var(--accent);text-transform:uppercase}
+.tko .sub{display:block;margin-top:10px;font:700 clamp(14px,2.4vw,17px)/1.3 var(--body)}
+.tko .meta{display:block;margin-top:6px;font:600 12px var(--body);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.tko.k-ot .big{color:#FF5252}
+.heat{display:inline-flex;gap:3px;align-items:flex-end;height:14px}
+.heat i{width:5px;background:var(--track)}
+.heat i:nth-child(1){height:5px}.heat i:nth-child(2){height:7px}.heat i:nth-child(3){height:9px}.heat i:nth-child(4){height:11px}.heat i:nth-child(5){height:14px}
+.heat i.on{background:var(--accent)}.heat i.on.red{background:#E8300E}
+.sr.hotg{position:relative}
+.sr.hotg::before{content:"";position:absolute;left:0;right:0;top:0;height:4px;background:repeating-linear-gradient(90deg,#E8300E 0 10px,var(--accent) 10px 20px);background-size:40px 4px}
+.wn.hotg{border-image:repeating-linear-gradient(90deg,#E8300E 0 10px,var(--accent) 10px 20px) 2}
+.pill.runp{border-color:var(--accent);color:var(--accent);font-weight:700}
+.pr.hotp .bar i{background:repeating-linear-gradient(-45deg,var(--accent) 0 8px,#E8300E 8px 16px);background-size:22.6px 22.6px}
+.ev.big.fresh{position:relative;overflow:hidden}
+.ev.big.fresh::after{content:"";position:absolute;top:0;bottom:0;width:30%;left:-30%;background:linear-gradient(90deg,transparent,rgba(255,179,0,.28),transparent)}
+@media (prefers-reduced-motion:no-preference){
+  @keyframes tkoIn{0%{transform:translateY(-120%) scaleY(.6);opacity:0}60%{transform:translateY(6%) scaleY(1.04);opacity:1}100%{transform:none}}
+  @keyframes tkoOut{to{transform:translateY(-130%);opacity:0}}
+  @keyframes marquee8{to{background-position:16px 0}}
+  @keyframes flick{0%,100%{opacity:1}8%{opacity:.25}12%{opacity:1}55%{opacity:1}58%{opacity:.4}62%{opacity:1}}
+  @keyframes roll{0%{transform:translateY(-75%);opacity:0;color:#fff}55%{transform:translateY(10%);opacity:1;color:var(--hi)}100%{transform:none}}
+  @keyframes chase{to{background-position:40px 0}}
+  @keyframes heatFlick{0%,100%{opacity:1}50%{opacity:.45}}
+  @keyframes runBlink{50%{background:var(--accent);color:#000}}
+  @keyframes stripes{to{background-position:22.6px 0}}
+  @keyframes sweepX{to{left:110%}}
+  .tko{animation:tkoIn .55s cubic-bezier(.2,1.3,.3,1) both}
+  .tko.out{animation:tkoOut .35s ease-in both}
+  .tko::before{animation:marquee8 .35s linear infinite}
+  .tko::after{animation:marquee8 .35s linear infinite reverse}
+  .tko .big{animation:flick 1.6s steps(1) infinite}
+  .bump{display:inline-block;animation:roll .65s cubic-bezier(.2,1.2,.3,1)}
+  .sr.hotg::before{animation:chase .6s linear infinite}
+  .heat.max i.on{animation:heatFlick .5s steps(2,jump-none) infinite}
+  .pill.runp{animation:runBlink 1s steps(2,jump-none) infinite}
+  .pr.hotp .bar i{animation:stripes .5s linear infinite}
+  .ev.big.fresh::after{animation:sweepX 1.4s ease-out 2}
+}
 /* motion: flat flashes only, no glows */
 @media (prefers-reduced-motion:no-preference){
   @keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
@@ -295,7 +356,6 @@ footer p{margin:0;max-width:60em}
   .sr.fl-clip{animation:flashClip 1.4s ease-out 3}
   .firebadge{animation:fire .7s ease-in-out infinite}
   .firebadge svg{transform-origin:50% 100%;animation:flame .55s ease-in-out infinite}
-  .bump{display:inline-block;animation:bump .7s ease-out}
   .ev.fresh{animation:evIn .8s ease-out}
   .toast{animation:toastIn .4s cubic-bezier(.2,1.1,.3,1) both}.toast.out{animation:toastOut .3s ease-in both}
   .ticker .track{animation:marquee 38s linear infinite}.ticker:hover .track{animation-play-state:paused}
@@ -307,6 +367,7 @@ footer p{margin:0;max-width:60em}
 <script>document.documentElement.dataset.style='arena'</script>
 
 <div id="toasts" aria-live="polite"></div>
+<div id="takeover" aria-live="assertive"></div>
 <div class="wrap">
   <header>
     <div class="hl"><div class="eyebrow" id="eyebrow"></div><h1>The Rundown</h1></div>
@@ -315,6 +376,7 @@ footer p{margin:0;max-width:60em}
     </div>
   </header>
   <div class="modebar" id="modebar" role="tablist" aria-label="Mode"></div>
+  <div id="watchnow" hidden></div>
 
   <div class="mode" id="m-preview" role="tabpanel" hidden></div>
   <div class="mode" id="m-live" role="tabpanel" hidden></div>
@@ -341,6 +403,7 @@ const IC={play:'<svg class="ic" viewBox="0 0 12 12" aria-hidden="true"><path d="
  down:'<svg class="ic" viewBox="0 0 12 12" aria-hidden="true"><path d="M2 3.5L6 8l4-4.5" fill="none" stroke="currentColor" stroke-width="2"/></svg>'};
 const dlabel=d=>new Date(d+'T12:00:00').toLocaleDateString(undefined,{weekday:'short',month:'short',day:'numeric'});
 const tlabel=t=>new Date(t).toLocaleTimeString(undefined,{hour:'numeric',minute:'2-digit'});
+const TZ=(()=>{try{return new Intl.DateTimeFormat(undefined,{timeZoneName:'short'}).formatToParts(new Date()).find(x=>x.type==='timeZoneName').value}catch(e){return ''}})();
 const qd=d=>String(d||'').replace(/(\d)(?:st|nd|rd|th) Quarter/i,'Q$1');
 const cut=(s,n)=>s.length<=n?s:s.slice(0,n).replace(/\s+\S*$/,'')+'…';
 const last=n=>n.split(' ').slice(-1)[0].replace(/[^A-Za-z]/g,'');
@@ -401,7 +464,7 @@ function toast(e){
   const host=$('#toasts');if(!host)return;
   const ot=/overtime/i.test(e.text),k=ot?'ot':(K2[e.kind]||'drama');
   const d=document.createElement('div');d.className='toast k-'+k;d.setAttribute('role','status');
-  d.innerHTML=`<b>${esc(ot?'Overtime':(KL[e.kind]||'Alert'))}</b><span>${esc(e.text)}</span><small>${esc(e.game)}</small>`;
+  d.innerHTML=`<b>${e.demo?'Demo · ':''}${esc(ot?'Overtime':(KL[e.kind]||'Alert'))}</b><span>${esc(e.text)}</span><small>${esc(e.game)}</small>`;
   d.onclick=()=>{userMode='live';SEC.live='feed';renderAll();d.remove();window.scrollTo({top:0})};
   host.appendChild(d);while(host.children.length>3)host.firstChild.remove();
   setTimeout(()=>{d.classList.add('out');setTimeout(()=>d.remove(),400)},7500);
@@ -412,19 +475,41 @@ function confetti(){
   for(let i=0;i<46;i++){const p=document.createElement('i');p.style.left=Math.random()*100+'%';p.style.background=cols[i%cols.length];p.style.animationDelay=Math.random()*.6+'s';p.style.transform=`rotate(${Math.random()*360}deg)`;c.appendChild(p)}
   document.body.appendChild(c);setTimeout(()=>c.remove(),3200);
 }
+const TKQ=[];let tkBusy=false;
+function tkLabel(e,ot){
+  if(ot)return 'Overtime';
+  if(/buzzer/i.test(e.text))return 'Buzzer-beater';
+  if(/game-winner/i.test(e.text))return 'Game-winner';
+  if(/ties it/i.test(e.text))return 'Tied at the horn';
+  if(e.kind==='record')return 'Record night';
+  if(e.kind==='player')return /triple-double/i.test(e.text)?'Triple-double':'Monster night';
+  return 'Big moment';
+}
+function takeover(e,ot){TKQ.push([e,ot]);if(!tkBusy)nextTk()}
+function nextTk(){
+  const host=$('#takeover');const it=TKQ.shift();if(!host||!it){tkBusy=false;return}
+  tkBusy=true;const [e,ot]=it;
+  const d=document.createElement('div');d.className='tko'+(ot?' k-ot':'');d.setAttribute('role','alert');
+  const lbl=(e.demo?'Demo · ':'')+tkLabel(e,ot);d.innerHTML=`<span class="big" style="--n:${lbl.length}">${esc(lbl)}</span><span class="sub">${esc(e.text)}</span><span class="meta">${esc(e.game)}${e.when?' · '+esc(e.when):''}</span>`;
+  d.onclick=()=>{userMode='live';SEC.live='feed';renderAll();window.scrollTo({top:0});close()};
+  host.innerHTML='';host.appendChild(d);document.body.classList.add('tk-on');document.body.style.setProperty('--tkh',d.offsetHeight+'px');
+  let done=false;const close=()=>{if(done)return;done=true;d.classList.add('out');setTimeout(()=>{d.remove();if(!TKQ.length)document.body.classList.remove('tk-on');nextTk()},MOTION?360:0)};
+  setTimeout(close,4800);
+}
 function ingest(evs){
   for(const e of evs){
     const ot=e.kind==='quarter'&&/overtime/i.test(e.text);
     fresh[e.id]=Date.now()+15000;
     flashes[e.gid]={kind:ot?'ot':e.kind==='clip'?'clip':(e.kind==='player'||e.kind==='record')?'fire':'big',until:Date.now()+9000};
-    if(e.imp>=4||ot||e.kind==='clip'&&e.imp>=3)toast(e);
-    if(e.imp>=5)confetti();
+    const elite=(e.imp>=5&&e.kind!=='injury')||ot;
+    if(elite)takeover(e,ot);else if(e.imp>=4||e.kind==='clip'&&e.imp>=3)toast(e);
+    if(e.imp>=5&&e.kind!=='injury'&&!ot)confetti();
   }
 }
 function demo(){
   const g=(L&&L.games||[]).filter(x=>x.state!=='pre');if(!g.length)return;
   const ot=g.find(x=>(x.tags||[]).includes('Overtime'))||g[0],hot=g[1]||g[0],cl=g[2]||g[0];
-  const mk=(x,kind,imp,text)=>({id:'demo'+Math.random(),gid:x.gid,game:x.away+' @ '+x.home,kind,imp,text,when:x.detail,score:x.away+' '+x.as+', '+x.home+' '+x.hs,ts:new Date().toISOString()});
+  const mk=(x,kind,imp,text)=>({demo:true,id:'demo'+Math.random(),gid:x.gid,game:x.away+' @ '+x.home,kind,imp,text,when:x.detail,score:x.away+' '+x.as+', '+x.home+' '+x.hs,ts:new Date().toISOString()});
   userMode='live';SEC.live='games';renderAll();
   const seq=[mk(ot,'quarter',5,`Overtime! ${ot.away} ${ot.as}, ${ot.home} ${ot.hs}.`),
     mk(hot,'player',4,`${(hot.top[0]||{name:'A star'}).name} is on fire: ${(hot.top[0]||{pts:34}).pts} points and counting.`),
@@ -445,9 +530,10 @@ function renderPreview(){
     const inj=(g.inj||[]).filter(x=>x.status==='Out'||x.status==='Doubtful').map(x=>`${esc(x.name)} (${esc(x.team)}, ${x.ppg} ppg) ${x.status.toLowerCase()}`).join(' · ');
     const q=(g.inj||[]).filter(x=>x.status!=='Out'&&x.status!=='Doubtful').map(x=>`${esc(x.name)}`).join(', ');
     const unit=(a,rec)=>`<span class="tm2">${tag(a)} <span>${esc(T(a).short)}</span> <span class="rec">${esc(rec)}</span></span>`;
-    return `<article class="pv ${i===0?'best':''}"><div class="tm">${tlabel(g.time)}</div><div class="pb">
+    return `<article class="pv ${i===0?'best':''}"><div class="tm">${tlabel(g.time)}<span class="tz">${esc(TZ)}</span></div><div class="pb">
       ${i<2?`<div class="pvl"><span class="vd ${i===0?'v-must':'v-skim'}">${i===0?'Best game on tonight':'Also worth it'}</span></div>`:''}
       <div class="mu">${unit(g.away,g.arec)}<span class="at">at</span>${unit(g.home,g.hrec)}</div>
+      ${tvLine(g.tv,g.away,g.home)}
       ${line?`<div class="line">${line}</div>`:''}
       ${g.why.length?`<ul class="why">${g.why.map(w=>`<li>${esc(w)}</li>`).join('')}</ul>`:''}
       <div class="kp">${(g.key||[]).map(p=>`<span class="kpi"><b>${esc(p.name)}</b><em>${p.ppg} ppg${p.delta>=6?`<span class="up">${IC.up}${p.l3ppg} last 3</span>`:''}</em></span>`).join('')}</div>${inj?`<div class="out">Out: ${inj}</div>`:''}${q?`<div class="line">Game-time decisions: ${q}</div>`:''}</div></article>`}).join('');
@@ -458,7 +544,7 @@ function renderPreview(){
   const items=[['games','Games',P.games.length],['players','Players',P.players.length],['form','Form guide',null]];
   const cur=pick('preview',items);
   el.className='mode '+enterCls('preview-'+cur);
-  el.innerHTML=`<p class="lede">${P.games.length} game${P.games.length>1?'s':''} tonight, first tip ${tlabel(first.time)}. Start with <b>${esc(T(best.away).short)} at ${esc(T(best.home).short)}</b>${heat?`, and keep an eye on <b>${esc(heat.name)}</b>, who is averaging ${heat.l3ppg} over his last three`:''}.</p>${menu('preview',items,cur)}${cur==='games'?sw:cur==='players'?sp:formGuide()}`;
+  el.innerHTML=`<p class="lede">${P.games.length} game${P.games.length>1?'s':''} tonight, first tip ${tlabel(first.time)} ${esc(TZ)}. Start with <b>${esc(T(best.away).short)} at ${esc(T(best.home).short)}</b>${heat?`, and keep an eye on <b>${esc(heat.name)}</b>, who is averaging ${heat.l3ppg} over his last three`:''}.</p>${menu('preview',items,cur)}${cur==='games'?sw:cur==='players'?sp:formGuide()}`;
   wire(el,'preview',renderPreview);stagger('.pv,.pr,.li',el);
 }
 
@@ -478,10 +564,12 @@ function renderLive(){
     const fl=flashes[c.gid]&&flashes[c.gid].until>Date.now()?'fl-'+flashes[c.gid].kind:'';
     const onfire=!fin&&((c.top&&c.top[0]&&c.top[0].pts>=35)||hotG.has(c.gid));
     const tl=(a,s,win)=>{const k=c.gid+a,bp=prevScore[k]!==undefined&&prevScore[k]!==s;prevScore[k]=s;return `<div class="tl ${fin&&!win?'lose':''}"><div class="nm">${tag(a)}<span>${esc(T(a).short)}</span></div><div class="pts num"><span class="${bp?'bump':''}">${s}</span></div></div>`};
-    return `<article class="sr ${idx===0&&gm.length>1?'feat':''} ${inOT?'otcard':''} ${crunch?'crunch':''} ${fl}">
-      <div class="st"><span class="${fin?'muted':'clk'}">${fin?(c.period>=5?'Final/OT':'Final'):esc(qd(c.detail))}</span>${inOT?'<span class="otpill ot">OVERTIME</span>':''}${onfire?FIRE:''}</div>
+    const lit=fin?0:Math.max(1,Math.min(5,Math.round((c.heat||0)/22)));
+    const meter=fin?'':`<span class="heat ${lit>=5?'max':''}" role="img" aria-label="Heat ${lit} of 5">${[1,2,3,4,5].map(i=>`<i class="${i<=lit?'on':''} ${i<=lit&&i>=4?'red':''}"></i>`).join('')}</span>`;
+    return `<article class="sr ${idx===0&&gm.length>1?'feat':''} ${!fin&&(c.heat||0)>=60?'hotg':''} ${inOT?'otcard':''} ${crunch?'crunch':''} ${fl}">
+      <div class="st"><span class="${fin?'muted':'clk'}">${fin?(c.period>=5?'Final/OT':'Final'):esc(qd(c.detail))}</span>${meter}${inOT?'<span class="otpill ot">OVERTIME</span>':''}${onfire?FIRE:''}</div>
       <div class="sc">${tl(c.away,c.as,!hw)}${tl(c.home,c.hs,hw)}</div><div class="fl">${flow({gid:c.gid,home:c.home,away:c.away,flow:c.flow})}</div>
-      <div class="in"><div class="tags">${(c.tags||[]).map(x=>`<span class="pill">${esc(x)}</span>`).join('')}</div>
+      <div class="in">${c.why?`<div class="whyl">${esc(c.why)}</div>`:''}${c.state==='in'?tvLine(c.tv,c.away,c.home):''}<div class="tags">${(c.tags||[]).map(x=>`<span class="pill ${/-0 run$/.test(x)?'runp':''}">${esc(x)}</span>`).join('')}</div>
       <div class="perf">${(c.top||[]).slice(0,2).map(p=>`<span><b>${esc(p.name)}</b> ${p.pts} pts${p.reb?`, ${p.reb} reb`:''}${p.ast?`, ${p.ast} ast`:''}</span>`).join('')}</div></div></article>`}).join('');
   const mxr=Math.max(...(L.hotnow||[]).map(p=>p.recent),1);
   const hotnow=(L.hotnow||[]).map(p=>`<div class="pr"><div class="big num">${p.recent}<small>last ${p.mins} min</small></div><div class="who">${tag(p.team)} <b class="nmx">${esc(p.name)}</b><div class="statrow"><div class="sc2"><b>${p.pts}</b><span>PTS TOTAL</span></div></div><span class="gm">${esc(p.game)}</span></div><div class="bar"><i style="width:${Math.round(p.recent/mxr*100)}%"></i></div></div>`).join('');
@@ -501,12 +589,12 @@ function renderLive(){
   const mxs=Math.max(...watchF.map(x=>typeof x.m[1]==='number'?x.m[1]:x.p.score),1);
   const watch=watchF.map(({p,m})=>{const [k,v,lab]=m,w=typeof v==='number'?v:p.score;return `<div class="pr ${p.score>=90?'hotp':''}"><div class="big num">${v}<small>${lab}</small></div><div class="who">${tag(p.team)} <b class="nmx">${esc(p.name)}</b>${p.score>=90?' ${FIRE}':''}${statrow(p,k,k)}${extra(p)}<span class="gm">${esc(p.game)}${p.live?' · live':' · final'}</span></div><div class="bar"><i style="width:${Math.round(w/mxs*100)}%"></i></div></div>`}).join('');
   const pchip=(k,l)=>`<button class="chip" data-pf="${k}" aria-pressed="${pf===k}">${l}</button>`;
-  const fl2=(L.feed||[]).filter(e=>ff==='all'||(ff==='big'&&e.imp>=4)||(ff==='players'&&(e.kind==='player'||e.kind==='record'))||(ff==='clips'&&e.kind==='clip'));
+  const fl2=(L.feed||[]).filter(e=>(ff==='all'&&!(e.kind==='clip'&&e.imp<=1))||(ff==='big'&&e.imp>=4)||(ff==='players'&&(e.kind==='player'||e.kind==='record'))||(ff==='clips'&&e.kind==='clip'));
   const feed=fl2.slice(0,40).map(e=>`<div class="ev ${e.imp>=4?'big':''} ${fresh[e.id]>Date.now()?'fresh':''}"><div class="ag">${esc(ago(e.ts))}</div><div><span class="lab k-${K2[e.kind]||'rout'}">${esc(KL[e.kind]||e.kind)}</span>${e.kind==='clip'&&e.imp>=3?'<span class="hotclip">HOT</span>':''}<div class="tx">${e.u?`<a href="${esc(e.u)}" target="_blank" rel="noopener">${IC.play}${esc(e.text)}</a>`:esc(e.text)}</div><div class="mt"><span>${esc(e.game)}</span><span>${esc(e.when)}</span><span>${esc(e.score)}</span></div></div></div>`).join('')||'<div class="ev"><div class="ag"></div><div class="empty">Nothing yet. Moments show up here as they happen.</div></div>';
   const fchip=(k,l)=>`<button class="chip" data-ff="${k}" aria-pressed="${ff===k}">${l}</button>`;
   const sg=`<section><div class="sh"><div class="row">${badge}<h2>${L.mode==='final'?'Tonight’s final':'Hot games'}</h2></div><p>${L.live?L.live+' in progress · ':''}updated ${esc(ago(L.updated))}${L.lag!=null&&L.mode==='live'?' · feed is about '+L.lag+'s behind the play':''}</p></div>
       <div class="board">${rows||'<p class="empty">No games have started yet.</p>'}</div>
-      ${pre.length?`<p class="eyebrow" style="margin:0">Still to tip: ${pre.map(g=>esc(g.away)+' at '+esc(g.home)+' '+tlabel(g.time)).join(' · ')}</p>`:''}</section>`;
+      ${pre.length?`<p class="eyebrow" style="margin:0">Still to tip (${esc(TZ)}): ${pre.map(g=>esc(g.away)+' at '+esc(g.home)+' '+tlabel(g.time)).join(' · ')}</p>`:''}</section>`;
   const sp=`${hotnow?`<section><div class="sh"><h2>Heating up right now</h2><p>Scoring in bunches over the last few minutes</p></div><div class="board pl">${hotnow}</div></section>`:''}
     <section><div class="sh"><h2>Hot players</h2><p>Points, boards, assists, defense, threes and triple-doubles</p></div>
       <div class="fx" role="group" aria-label="Filter by stat">${pchip('all','All')}${pchip('pts','Scoring')}${pchip('reb','Rebounds')}${pchip('ast','Assists')}${pchip('def','Steals and blocks')}${pchip('tpm','Threes')}${pchip('td','Triple-double')}</div>
@@ -569,6 +657,28 @@ function renderFinal(){
 }
 
 
+/* ---------- where to watch ---------- */
+function tvParts(tv,away,home){
+  tv=tv||[];const nat=tv.filter(x=>x.m==='national').map(x=>x.n);
+  const loc=[['home',home],['away',away]].map(([m,t])=>[t,tv.filter(x=>x.m===m).map(x=>x.n)]).filter(x=>x[1].length);
+  return {nat,loc};
+}
+function tvLine(tv,away,home){
+  const {nat,loc}=tvParts(tv,away,home);if(!nat.length&&!loc.length)return '';
+  return `<div class="tvl">${IC.play}${nat.length?`<b class="nat">${esc(nat.join(', '))}</b>`:''}${nat.length&&loc.length?' · ':''}${loc.map(([t,ns])=>`<b>${esc(t)}</b> ${esc(ns.join(', '))}`).join(' · ')}</div>`;
+}
+function tvShort(tv,away,home){const {nat,loc}=tvParts(tv,away,home);return nat.length?nat.join(', '):loc.length?loc[0][1][0]:''}
+
+/* ---------- watch now ---------- */
+function renderWatchNow(cur){
+  const el=$('#watchnow');if(!el)return;
+  const g=(L&&L.mode==='live')?(L.games||[]).filter(x=>x.state==='in').sort((a,b)=>b.heat-a.heat)[0]:null;
+  if(!g||(cur==='live'&&SEC.live==='games')){el.hidden=true;el.innerHTML='';return}
+  el.hidden=false;
+  el.innerHTML=`<button class="wn ${(g.heat||0)>=60?'hotg':''}" type="button" aria-label="Open the hottest live game"><span class="wnl"><i></i>Watch now</span><span class="wng">${tag(g.away)}<span class="num">${g.as}</span><span class="muted">at</span>${tag(g.home)}<span class="num">${g.hs}</span></span><span class="wnd">${esc(qd(g.detail))}${g.why?' · '+esc(g.why):''}${tvShort(g.tv,g.away,g.home)?' · on '+esc(tvShort(g.tv,g.away,g.home)):''}</span><span class="go">Hot games</span></button>`;
+  el.querySelector('button').onclick=()=>{userMode='live';SEC.live='games';history.replaceState(null,'','#live-games');renderAll();window.scrollTo({top:0})};
+}
+
 /* ---------- shell ---------- */
 function autoMode(){
   if(L&&L.mode==='live')return 'live';
@@ -582,6 +692,7 @@ function renderAll(){
   $('#modebar').innerHTML=MODES.map(([k,l])=>`<button role="tab" data-m="${k}" aria-selected="${k===cur}">${l}${k===auto?'<span class="now">NOW</span>':''}${k==='live'&&L&&L.mode==='live'?'<span class="badge" style="padding:2px 6px"><i></i></span>':''}</button>`).join('');
   document.querySelectorAll('[data-m]').forEach(b=>b.onclick=()=>{userMode=b.dataset.m;history.replaceState(null,'','#'+userMode);window.scrollTo({top:0});renderAll()});
   for(const [k] of MODES) $('#m-'+k).hidden=k!==cur;
+  renderWatchNow(cur);
   ({preview:renderPreview,live:renderLive,final:renderFinal})[cur]();
   $('#eyebrow').textContent=D.sport+' · '+(cur==='preview'?'morning preview':cur==='live'?'live now':'daily recap');
   const t=new Date(Math.max(new Date(D.updated),L?new Date(L.updated):0)).toLocaleString(undefined,{month:'short',day:'numeric',hour:'numeric',minute:'2-digit'});
@@ -609,5 +720,5 @@ async function boot(){
   const retry=async()=>{if(!D.nights.length){const dg2=await pull('digest');if(dg2&&dg2.nights){D=dg2;const pv2=await pull('preview');if(pv2&&pv2.games)P=pv2;renderAll()}}};
   setInterval(retry,15000);
 }
-boot();
+boot().then(()=>{if(/[?&]demo\b/.test(location.search))setTimeout(demo,1200)});
 </script>

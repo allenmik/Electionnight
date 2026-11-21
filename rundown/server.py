@@ -111,33 +111,47 @@ def signature(doc):
     return hashlib.md5(json.dumps(d, sort_keys=True).encode()).hexdigest()
 
 
+LOOP = {'sig': None, 'finals': 0}
+REPLAY_FILE = os.environ.get('REPLAY_FILE')    # development only: serve a saved live document instead of polling ESPN
+
+
+def step(doc, now=None):
+    """Handle one poll result: push changes, rebuild the recap when a night ends, rebuild the preview each morning.
+    Returns how long to wait before the next poll."""
+    sig = signature(doc)
+    STATE['live'] = doc
+    if sig != LOOP['sig']:
+        LOOP['sig'] = sig
+        with open(os.path.join(DATA, 'live.json'), 'w') as f:
+            json.dump(doc, f, separators=(',', ':'))
+        broadcast('live', doc)
+    else:
+        broadcast('tick', {'updated': doc.get('updated'), 'lag': doc.get('lag')})
+    # every game final on two polls in a row: rebuild the recap once for that slate
+    LOOP['finals'] = LOOP['finals'] + 1 if doc.get('allfinal') else 0
+    if LOOP['finals'] >= 2 and STATE['maintained_for'] != doc.get('slate'):
+        STATE['maintained_for'] = doc.get('slate')
+        threading.Thread(target=refresh_digest, daemon=True).start()
+    # morning: build today's preview once, after 7am Eastern, when nothing is live
+    now = now or datetime.now(ET)
+    today = now.date().isoformat()
+    if now.hour >= 7 and STATE['preview_for'] != today and not doc.get('live'):
+        STATE['preview_for'] = today
+        threading.Thread(target=refresh_preview, args=(today,), daemon=True).start()
+    return POLL if doc.get('live') else IDLE
+
+
 def live_loop():
-    last_sig, finals = None, 0
     while True:
         wait = IDLE
         try:
-            doc, _ = live_nba.poll()
-            wait = POLL if doc.get('live') else IDLE
-            sig = signature(doc)
-            STATE['live'] = doc
-            if sig != last_sig:
-                last_sig = sig
-                with open(os.path.join(DATA, 'live.json'), 'w') as f:
-                    json.dump(doc, f, separators=(',', ':'))
-                broadcast('live', doc)
+            if REPLAY_FILE:
+                with open(REPLAY_FILE) as f:
+                    doc = json.load(f)
+                doc['updated'] = datetime.now(timezone.utc).isoformat(timespec='seconds').replace('+00:00', 'Z')
             else:
-                broadcast('tick', {'updated': doc['updated'], 'lag': doc.get('lag')})
-            # all games final: rebuild the recap once for that slate
-            finals = finals + 1 if doc.get('allfinal') else 0
-            if finals >= 2 and STATE['maintained_for'] != doc.get('slate'):
-                STATE['maintained_for'] = doc.get('slate')
-                threading.Thread(target=refresh_digest, daemon=True).start()
-            # morning: build the preview for today's slate (after 7am Eastern, once a day)
-            now = datetime.now(ET)
-            today = now.date().isoformat()
-            if now.hour >= 7 and STATE['preview_for'] != today and not doc.get('live'):
-                STATE['preview_for'] = today
-                threading.Thread(target=refresh_preview, args=(today,), daemon=True).start()
+                doc, _ = live_nba.poll()
+            wait = step(doc)
         except Exception:
             log('poll failed (will retry):', traceback.format_exc().splitlines()[-1])
         time.sleep(wait)

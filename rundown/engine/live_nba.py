@@ -131,6 +131,19 @@ def analyze_live(s,status):
             'videos':vids,'players':players,'headline':(s.get('article') or {}).get('headline'),'box_live':bool(box)}
 
 
+def networks(comp):
+    """Where to watch, from an ESPN competition: [{'n': name, 'm': national|home|away, 't': TV|Streaming}]."""
+    out=[]
+    for b in comp.get('geoBroadcasts') or []:
+        n=(b.get('media') or {}).get('shortName');m=((b.get('market') or {}).get('type') or '').lower();t=(b.get('type') or {}).get('shortName') or ''
+        if n and not any(x['n']==n for x in out): out.append({'n':n,'m':m,'t':t})
+    if not out:
+        for b in comp.get('broadcasts') or []:
+            for n in b.get('names') or []:
+                if not any(x['n']==n for x in out): out.append({'n':n,'m':(b.get('market') or '').lower(),'t':''})
+    order={'national':0,'home':1,'away':2}
+    return sorted(out,key=lambda x:order.get(x['m'],3))
+
 def hot_reasons(p,in_game=True):
     """Why a player is hot right now, across every stat. Returns (score, [badges], headline_stat) or None."""
     pts,reb,ast,stl,blk,tpm=p['pts'],p['reb'],p['ast'],p['stl'],p['blk'],p['tpm']
@@ -153,18 +166,36 @@ def hot_reasons(p,in_game=True):
     return {'score':round(sc,1),'badges':r,'key':best[1]}
 
 def heat_score(g,state):
-    m=abs(g['hs']-g['as']);per=g['period'];left=clk(g['clock'])
+    """How much a fan should switch to this game right now."""
     if state=='pre': return 0
-    if state=='post': base=max(0,30-m*2)*0.4
-    else:
-        w={1:.25,2:.45,3:.8}.get(per,1.5)
-        base=max(0,34-m*2.4)*w
-        if per>=4 and m<=5 and left<=300: base+=40
-        if per>=5: base+=25
-        if g['run'] and g['run']['pts']>=12: base+=10
-        base+=sum(8 for p in g['players'][:2] if p['pts']>=30)
-        if m>=22 and per>=3: base=max(base*0.3,0)
-    return round(base,1)
+    m=abs(g['hs']-g['as']);per=g['period'];left=clk(g['clock'])
+    if state=='post': return round(max(0,30-m*2)*0.2,1)          # finished games sink below live ones
+    w={1:.3,2:.5,3:.8}.get(per,1.3)
+    sc=max(0,30-m*2.2)*w                                            # closeness, weighted by how late it is
+    if per>=5: sc+=55                                               # overtime
+    elif per>=4 and m<=5 and left<=300: sc+=45                      # crunch time
+    if g['run'] and g['run']['pts']>=10: sc+=g['run']['pts']*1.5    # a run in progress
+    best=max([h['score'] for p in g['players'] for h in [hot_reasons(p)] if h] or [0])
+    sc+=min(30,best/4)                                              # a star line
+    sc+=min(g['lead_changes'],15)*0.6
+    if m>=20 and per>=3: sc*=0.35                                   # blowouts drop
+    return round(sc,1)
+
+def why_watch(g,state):
+    """The single best reason to switch to this game now."""
+    if state!='in': return ''
+    m=abs(g['hs']-g['as']);per=g['period'];left=clk(g['clock'])
+    lead=g['home'] if g['hs']>g['as'] else g['away'] if g['as']>g['hs'] else None
+    if per>=5: return 'Overtime'
+    if per>=4 and m<=5 and left<=300: return 'Crunch time, '+('tied' if lead is None else f'{lead} up {m}')
+    if g['run'] and g['run']['pts']>=10: return f"{g['run']['team']} on a {g['run']['pts']}-0 run"
+    hots=[(h['score'],p,h) for p in g['players'] for h in [hot_reasons(p)] if h]
+    if hots:
+        _,p,h=max(hots,key=lambda x:x[0])
+        if h['score']>=60: return f"{p['name']} has {', '.join(h['badges'][:2])}"
+    if m<=4 and per>=3: return f'Tight in the {ql(per)}'
+    if m>=20 and per>=3: return 'Blowout'
+    return ''
 
 def tags_for(g,state):
     t=[];m=abs(g['hs']-g['as']);per=g['period'];left=clk(g['clock'])
@@ -187,14 +218,15 @@ def detect(gkey,g,state,st,meta,highs,now,mode):
     lead=H if g['hs']>g['as'] else A if g['as']>g['hs'] else None
     score=f"{A} {g['as']}, {H} {g['hs']}"
     when=f"{ql(per)} {cl}" if state=='in' else 'Final'
-    def add(key,kind,imp,text,url=None):
+    def add(key,kind,imp,text,url=None,grp=None):
         if key in sent: return
-        sent.add(key);ev.append({'id':f"{gkey}:{key}",'ts':now,'gid':gkey,'game':game,'kind':kind,'imp':imp,'text':text,'when':when,'score':score,**({'u':url} if url else {})})
+        sent.add(key);ev.append({'id':f"{gkey}:{key}",'ts':now,'gid':gkey,'game':game,'kind':kind,'imp':imp,'text':text,'when':when,'score':score,
+                                 **({'u':url} if url else {}),**({'grp':f"{gkey}:{grp}"} if grp else {})})
     def tiered(prefix,val,thrs,imps,kind,text):
         crossed=[(t,i) for t,i in zip(thrs,imps) if val>=t]
         if not crossed: return
         for t,_ in crossed[:-1]: sent.add(f"{prefix}_{t}")
-        t,i=crossed[-1];add(f"{prefix}_{t}",kind,i,text(t))
+        t,i=crossed[-1];add(f"{prefix}_{t}",kind,i,text(t),grp=prefix)
     if state in('in','post'):
         # entering the fourth / OT
         if state=='in' and per==4 and left>=540:
@@ -237,12 +269,18 @@ def detect(gkey,g,state,st,meta,highs,now,mode):
         # hot hand: points in the last ~7 minutes of game time
         if state=='in':
             for r in g['recent']:
-                if r['recent']>=12: add(f"hh{r['name']}_{per}",'player',3,f"{r['name']} ({r['team']}) is heating up: {r['recent']} points in the last 7 minutes, {r['pts']} total.")
+                if r['recent']>=12: add(f"hh{r['name']}_{per}",'player',3,grp=f"hh{r['name']}",text=f"{r['name']} ({r['team']}) is heating up: {r['recent']} points in the last 7 minutes, {r['pts']} total.")
         # highlight clips
+        hot_names={p['name'].split()[-1].lower() for p in g['players'] if p['pts']>=20 or hot_reasons(p)}
         for v in g['videos']:
             if re.search(r'game highlights',v['t'],re.I): continue
-            imp=3 if re.search(r'buzzer|game-winner|poster|dunk|block|steal|and-1|and-one|half-court|logo',v['t'],re.I) else 2
-            add('v'+v['u'].split('/id/')[-1].split('/')[0],'clip',imp,v['t'],v['u'])
+            t_=v['t'].lower()
+            if re.search(r'buzzer|game-winner|go-ahead|poster|half-court|logo|clutch',t_): imp=3
+            elif re.search(r'dunk|slam|jam|flush|alley|block|reject|swat|stuff|steal|and-1|and-one|hoop and the harm|elevates|skies|throws down|rocks the rim|takes flight',t_): imp=2
+            else: imp=1                                              # routine "hits a shot" clips
+            if any(n and n in t_ for n in hot_names): imp+=1         # it's the player everyone is watching
+            if per>=4 and m<=5 and state=='in': imp+=1               # late in a close game
+            add('v'+v['u'].split('/id/')[-1].split('/')[0],'clip',min(imp,3),v['t'],v['u'])
     # injuries reported after tip-off
     if state in('in','post') and meta.get('time'):
         for i_ in g['inj']:
@@ -279,13 +317,14 @@ def poll(replay=None):
             ty=e['status']['type'];stt=ty['state']
             srcs.append((e['id'],None,{'state':stt,'period':e['status'].get('period'),'clock':e['status'].get('displayClock'),'detail':ty.get('shortDetail'),'time':e['date'],
                          'teams':{c['homeAway']:c['team']['abbreviation'] for c in e['competitions'][0]['competitors']},
-                         'scores':{c['homeAway']:int(c.get('score') or 0) for c in e['competitions'][0]['competitors']}}))
+                         'scores':{c['homeAway']:int(c.get('score') or 0) for c in e['competitions'][0]['competitors']},
+                         'tv':networks(e['competitions'][0])}))
     if st.get('slate')!=slate:
         st={'slate':slate,'games':{},'feed':[]}
     for gid,summ,status in srcs:
         state=status['state']
         if state=='pre':
-            games.append({'gid':gid,'state':'pre','away':status['teams']['away'],'home':status['teams']['home'],'time':status.get('time'),'heat':0,'tags':[]});continue
+            games.append({'gid':gid,'state':'pre','away':status['teams']['away'],'home':status['teams']['home'],'time':status.get('time'),'heat':0,'tags':[],'tv':status.get('tv') or []});continue
         if summ is None:
             gs=st['games'].get(gid,{})
             if state=='post' and gs.get('done'):
@@ -301,7 +340,7 @@ def poll(replay=None):
         ev=detect(gid,g,state,st,status,highs,now,mode);newev+=ev
         top=[{'name':p['name'],'team':p['team'],'pts':p['pts'],'reb':p['reb'],'ast':p['ast'],'tpm':p['tpm']} for p in g['players'][:3]]
         card={'gid':gid,'state':state,'away':g['away'],'home':g['home'],'as':g['as'],'hs':g['hs'],'period':g['period'],'clock':g['clock'],
-              'detail':status.get('detail') or (f"{ql(g['period'])} {g['clock']}"),'margin':abs(g['hs']-g['as']),'heat':heat_score(g,state),
+              'detail':status.get('detail') or (f"{ql(g['period'])} {g['clock']}"),'margin':abs(g['hs']-g['as']),'heat':heat_score(g,state),'why':why_watch(g,state),'tv':status.get('tv') or [],
               'tags':tags_for(g,state),'flow':g['flow'],'lc':g['lead_changes'],'run':({'team':g['run']['team'],'pts':g['run']['pts']} if g['run'] and state=='in' else None),
               'top':top,'headline':g['headline'] if state=='post' else None,
               'hot':[{'name':p['name'],'team':p['team'],'pts':p['pts'],'reb':p['reb'],'ast':p['ast'],'stl':p['stl'],'blk':p['blk'],'tpm':p['tpm'],**h} for p in g['players'] for h in [hot_reasons(p)] if h]}
@@ -315,7 +354,8 @@ def poll(replay=None):
         gst=st['games'].setdefault(gid,{'sent':[]});gst['card']=card
         st.setdefault('recent',{})[gid]=([{**r,'gid':gid,'game':f"{g['away']} @ {g['home']}"} for r in g['recent']] if state=='in' else [])
         if state=='post': gst['done']=True
-    st['feed']=(newev+st['feed'])[:150]
+    groups={e['grp'] for e in newev if e.get('grp')}
+    st['feed']=(newev+[e for e in st['feed'] if e.get('grp') not in groups])[:150]
     json.dump(st,open(P('state_replay.json' if replay else 'state.json'),'w'))
     live=[g for g in games if g['state']=='in'];pre=[g for g in games if g['state']=='pre'];post=[g for g in games if g['state']=='post']
     allfinal=bool(games) and not live and not pre

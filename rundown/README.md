@@ -24,6 +24,17 @@ The first start pulls the season from ESPN and builds the recap and preview (abo
 | Recap | rebuilt automatically when the last game of a night ends |
 | Preview | rebuilt once each morning after 7 am Eastern |
 
+## What a fan sees
+
+* **Watch now** bar on every tab: the hottest live game, why (crunch time, overtime, a run, a star line) and the channel.
+* **Hot games** ranked by how worth-switching-to they are, each with a 5-bar heat meter; the hottest get chasing lights.
+* **Where to watch**: national TV plus each team's local TV and streaming, from ESPN's broadcast listings.
+* **Alerts**: one alert per player stat (a newer milestone replaces the older one), clips rated so only real action
+  or hot players reach the main feed, scoreboard-style score rolls, blinking runs, fire stripes on hot players.
+* **Jumbotron takeover** for the biggest moments (game-winners, buzzer-beaters, overtime, 50-point and 20-20 nights),
+  with confetti. Add `?demo` to the address to play the effects on demand; demo alerts are labeled "Demo".
+* Effects switch off for anyone with "reduce motion" turned on.
+
 ## Settings (environment variables)
 
 | Variable | Default | Meaning |
@@ -51,6 +62,14 @@ If you put it behind a proxy, make sure it does not buffer `/events` (the server
 
 `/` the page · `/events` live stream · `/api/live` · `/api/digest` (recaps, form guide) · `/api/preview` · `/healthz`
 
+## Tests
+
+```bash
+python3 tests/test_server.py          # recap rebuild after the last game, morning preview timing, polling speed
+python3 tests/test_engine_replay.py   # replays a past night poll by poll (needs the data folder from one run)
+REPLAY_FILE=data/live_replay_dev.json python3 server.py   # serve that replay as if it were live, for design work
+```
+
 ## Layout
 
 ```
@@ -60,6 +79,7 @@ engine/live_nba.py   live story engine (runs, crunch time, game-winners, records
 engine/analyze_nba.py, digest_nba.py   per-game analysis and the nightly "best moments" ranking
 engine/preview_nba.py                  morning preview (matchups, injuries, who to watch)
 engine/fetch_season.py, build_data.py  season download and standings
+tests/                                 server job tests and a poll-by-poll engine replay
 ```
 
 ## Limits worth knowing

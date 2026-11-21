@@ -2,6 +2,7 @@
 import json,collections,urllib.request,sys
 from datetime import datetime,timedelta,timezone
 from analyze_nba import load_all,et_date
+from live_nba import networks
 B="https://site.api.espn.com/apis/site/v2/sports/basketball/nba/"
 get=lambda u:json.load(urllib.request.urlopen(u,timeout=30))
 G=load_all()
@@ -77,7 +78,7 @@ for e in ev:
             kp.append(c_);allplayers[c_['id']]={**c_,'game':f"{A} @ {H}",'gid':e['id']}
             if c_['delta']>=6 and c_['l3gs']>=17: score+=6;why.append(f"{c_['name']} is heating up ({c_['l3ppg']} ppg last 3)")
     games.append({'gid':e['id'],'away':A,'home':H,'time':e['date'],'arec':f"{S[A]['w']}-{S[A]['l']}",'hrec':f"{S[H]['w']}-{S[H]['l']}",
-                  'fav':fav[0] if fav else None,'spread':fav[1] if fav else None,'ou':pc.get('overUnder'),'score':score,'why':why[:4],'key':kp,'inj':inj[:4],
+                  'tv':networks(c),'fav':fav[0] if fav else None,'spread':fav[1] if fav else None,'ou':pc.get('overUnder'),'score':score,'why':why[:4],'key':kp,'inj':inj[:4],
                   'b2b':[t for t in (A,H) if yday in teamdates[t]]})
 games.sort(key=lambda g:-g['score'])
 def tags_for(p):
