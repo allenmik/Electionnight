@@ -37,6 +37,11 @@ The first start pulls the season from ESPN and builds the recap and preview (abo
 * **Jumbotron takeover** for the biggest moments (game-winners, buzzer-beaters, overtime, 50-point and 20-20 nights),
   with confetti. Add `?demo` to the address to play the effects on demand; demo alerts are labeled "Demo".
 * Effects switch off for anyone with "reduce motion" turned on.
+* **Game page** for every game (the "Game page ›" links on cards, recap rows, top moments and feed items): the story
+  first (headline, recap, lead changes, biggest run, game-winner, how it swung, key moments, who decided it,
+  highlights), then a **Box score** tab with the line score, team comparison and sortable player tables.
+  Links look like `#game-401909306` (story) and `#game-401909306-box` (box score), so they can be shared.
+* **NBA Cup** games get a green card and a Cup badge everywhere they appear.
 
 ## Settings (environment variables)
 
@@ -63,7 +68,7 @@ If you put it behind a proxy, make sure it does not buffer `/events` (the server
 
 ## Endpoints
 
-`/` the page · `/events` live stream · `/api/live` · `/api/digest` (recaps, form guide) · `/api/preview` · `/healthz`
+`/` the page · `/events` live stream · `/api/live` · `/api/digest` (recaps, form guide) · `/api/preview` · `/api/game/<id>` (one game: story and full box score) · `/healthz`
 
 ## Tests
 

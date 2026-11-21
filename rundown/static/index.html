@@ -281,6 +281,58 @@ footer p{margin:0;max-width:60em}
 .tz{display:block;font:700 11px var(--body);letter-spacing:.1em;color:var(--muted);margin-top:6px}
 @media (max-width:560px){.wn .go{display:none}}
 @media (prefers-reduced-motion:no-preference){.wnl i{animation:pulse 1s infinite}}
+/* ---------- game page ---------- */
+.gl{font:700 11.5px var(--body);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);text-decoration:none;border-bottom:1px solid currentColor;white-space:nowrap}
+.gl:hover,.gl:focus-visible{color:var(--accent)}
+.mt a.gl{letter-spacing:.03em;text-transform:none;font-size:12px}
+.back{align-self:flex-start;font:700 12px var(--body);letter-spacing:.1em;text-transform:uppercase;color:var(--accent);text-decoration:none}
+.gph{border:2px solid var(--accent);background:#000;padding:18px;display:flex;flex-direction:column;gap:14px}
+.gstat{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font:800 20px var(--display);text-transform:uppercase}
+.gteams{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);gap:14px;align-items:center}
+.gtm{display:flex;align-items:center;gap:12px;min-width:0}
+.gtm.r{flex-direction:row-reverse;text-align:right}
+.gtn{min-width:0}.gtn b{display:block;font-size:20px;font-weight:700}.gtn small{color:var(--muted);font-size:13px}
+.gsc{font:800 clamp(44px,8vw,84px)/1 var(--display);color:var(--accent);margin-left:auto}
+.gtm.r .gsc{margin-left:0;margin-right:auto}
+.gtm.lose .gsc,.gtm.lose .gtn{opacity:.5}
+.gat{font:700 12px var(--body);letter-spacing:.12em;color:var(--muted);text-transform:uppercase}
+.ginfo{font-size:12.5px;color:var(--muted)}
+.gflow svg.flow{height:150px}
+.grecap{margin:0;font-size:15px;line-height:1.55;max-width:62em}
+.gfacts{display:flex;flex-wrap:wrap;gap:6px}
+.gfacts .pill{font-size:12px;color:var(--ink);border-color:var(--muted);padding:4px 9px}
+.gcta{align-self:flex-start;font:800 13px var(--body);letter-spacing:.1em;text-transform:uppercase;background:var(--accent);color:#000;border:0;padding:10px 16px;cursor:pointer}
+.ls{border-collapse:collapse;font-variant-numeric:tabular-nums;min-width:320px}
+.ls th{font:700 11px var(--body);letter-spacing:.08em;color:var(--muted);padding:6px 10px;text-align:center;border-bottom:1px solid var(--line)}
+.ls td{padding:8px 10px;text-align:center;border-bottom:1px solid var(--line);font-size:15px}
+.ls td:first-child,.ls th:first-child{text-align:left}
+.ls td.t{font:800 22px var(--display);color:var(--accent)}
+.tc{display:grid;grid-template-columns:72px minmax(0,1fr) 72px;gap:2px 14px;align-items:center;padding:9px 0;border-bottom:1px solid var(--line)}
+.tc .v{font:800 22px var(--display);font-variant-numeric:tabular-nums}.tc .v.r{text-align:right}.tc .v.best{color:var(--accent)}
+.tc .lb{text-align:center;font:600 12px var(--body);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.tc .bars{display:grid;grid-template-columns:1fr 1fr;gap:3px;height:6px;margin-top:6px}
+.tc .bars span{background:var(--track);position:relative;overflow:hidden}.tc .bars i{position:absolute;top:0;bottom:0;background:var(--muted)}
+.tc .bars span:first-child i{right:0}.tc .bars .w i{background:var(--accent)}
+.bxw{overflow-x:auto;border-top:1px solid var(--line)}
+table.bx{border-collapse:collapse;width:100%;min-width:780px;font-variant-numeric:tabular-nums}
+.bx th{font:700 11px var(--body);letter-spacing:.08em;color:var(--muted);text-align:right;padding:9px 8px;white-space:nowrap;border-bottom:1px solid var(--line)}
+.bx th button{all:unset;cursor:pointer}.bx th button:focus-visible{outline:2px solid var(--accent)}
+.bx th[aria-sort] button{color:var(--accent)}
+.bx td{padding:8px;text-align:right;border-bottom:1px solid var(--line);font-size:14px;white-space:nowrap}
+.bx th:first-child,.bx td:first-child{text-align:left;position:sticky;left:0;background:var(--bg);z-index:1}
+.bx td.top{color:var(--accent);font-weight:700}
+.bx tr.sub td{font:700 11px var(--body);letter-spacing:.1em;color:var(--muted);text-transform:uppercase;background:var(--surface)}
+.bx tr.tot td{font-weight:700;border-top:2px solid var(--muted)}
+.bx .pn b{font-weight:600}.bx .pn small{color:var(--muted);margin-left:6px;font-size:12px}
+.dnp{font-size:13px;color:var(--muted);margin:8px 0 0}
+.bxh{display:flex;align-items:center;gap:10px;font:800 20px var(--display);text-transform:uppercase;margin-top:8px}
+/* ---------- NBA Cup ---------- */
+.cupb{display:inline-block;font:800 11px var(--body);letter-spacing:.12em;text-transform:uppercase;color:#03140F;background:#19C98F;padding:2px 8px;white-space:nowrap}
+.cupl{margin-bottom:8px}
+.sr.cup,.pv.cup,.gph.cup{background:#072A22 !important}
+.sr.cup,.pv.cup{border-left:6px solid #19C98F}
+.gph.cup{border-color:#19C98F}
+@media (max-width:560px){.gteams{grid-template-columns:minmax(0,1fr)}.gat{display:none}.gtm.r{flex-direction:row;text-align:left}.gtm.r .gsc{margin-left:auto;margin-right:0}.tc{grid-template-columns:56px minmax(0,1fr) 56px}}
 /* ---------- fan-mode effects ---------- */
 body.tk-on #toasts{top:calc(env(safe-area-inset-top,0px) + var(--tkh,150px) + 16px)}
 #takeover{position:fixed;left:0;right:0;top:calc(env(safe-area-inset-top,0px) + 8px);z-index:35;display:flex;justify-content:center;pointer-events:none;padding-inline:max(10px,env(safe-area-inset-left,0px))}
@@ -381,6 +433,7 @@ body.tk-on #toasts{top:calc(env(safe-area-inset-top,0px) + var(--tkh,150px) + 16
   <div class="mode" id="m-preview" role="tabpanel" hidden></div>
   <div class="mode" id="m-live" role="tabpanel" hidden></div>
   <div class="mode" id="m-final" role="tabpanel" hidden></div>
+  <div class="mode" id="m-game" hidden></div>
 
   <footer><p>Stats, recaps, odds and video links come from ESPN’s public data and are processed by this server. Preview refreshes each morning, Live about every 20 seconds while games are on, Recap when the last game ends.</p></footer>
 </div>
@@ -530,13 +583,13 @@ function renderPreview(){
     const inj=(g.inj||[]).filter(x=>x.status==='Out'||x.status==='Doubtful').map(x=>`${esc(x.name)} (${esc(x.team)}, ${x.ppg} ppg) ${x.status.toLowerCase()}`).join(' · ');
     const q=(g.inj||[]).filter(x=>x.status!=='Out'&&x.status!=='Doubtful').map(x=>`${esc(x.name)}`).join(', ');
     const unit=(a,rec)=>`<span class="tm2">${tag(a)} <span>${esc(T(a).short)}</span> <span class="rec">${esc(rec)}</span></span>`;
-    return `<article class="pv ${i===0?'best':''}"><div class="tm">${tlabel(g.time)}<span class="tz">${esc(TZ)}</span></div><div class="pb">
+    return `<article class="pv ${i===0?'best':''} ${g.cup?'cup':''}"><div class="tm">${tlabel(g.time)}<span class="tz">${esc(TZ)}</span></div><div class="pb">
       ${i<2?`<div class="pvl"><span class="vd ${i===0?'v-must':'v-skim'}">${i===0?'Best game on tonight':'Also worth it'}</span></div>`:''}
-      <div class="mu">${unit(g.away,g.arec)}<span class="at">at</span>${unit(g.home,g.hrec)}</div>
+      ${g.cup?`<div class="cupl">${cupb(g.cup)}</div>`:''}<div class="mu">${unit(g.away,g.arec)}<span class="at">at</span>${unit(g.home,g.hrec)}</div>
       ${tvLine(g.tv,g.away,g.home)}
       ${line?`<div class="line">${line}</div>`:''}
       ${g.why.length?`<ul class="why">${g.why.map(w=>`<li>${esc(w)}</li>`).join('')}</ul>`:''}
-      <div class="kp">${(g.key||[]).map(p=>`<span class="kpi"><b>${esc(p.name)}</b><em>${p.ppg} ppg${p.delta>=6?`<span class="up">${IC.up}${p.l3ppg} last 3</span>`:''}</em></span>`).join('')}</div>${inj?`<div class="out">Out: ${inj}</div>`:''}${q?`<div class="line">Game-time decisions: ${q}</div>`:''}</div></article>`}).join('');
+      <div class="kp">${(g.key||[]).map(p=>`<span class="kpi"><b>${esc(p.name)}</b><em>${p.ppg} ppg${p.delta>=6?`<span class="up">${IC.up}${p.l3ppg} last 3</span>`:''}</em></span>`).join('')}</div>${inj?`<div class="out">Out: ${inj}</div>`:''}${q?`<div class="line">Game-time decisions: ${q}</div>`:''}<div style="margin-top:10px">${gl(g.gid,'Game page')}</div></div></article>`}).join('');
   const mx=Math.max(...P.players.map(p=>p.l3ppg),1);
   const players=P.players.map(p=>`<div class="pr"><div class="big num">${p.l3ppg}<small>last 3 pts</small></div><div class="who">${tag(p.team)} <b class="nmx">${esc(p.name)}</b>${avgrow(p)}<div class="chips">${(p.tags||[]).map(x=>`<span class="pill">${esc(x)}</span>`).join('')}</div><span class="gm">${esc(p.game)} · last 3 games: ${p.last.join(', ')} pts</span></div><div class="bar" title="Last-3 scoring vs the slate's best"><i style="width:${Math.round(p.l3ppg/mx*100)}%"></i></div></div>`).join('');
   const sw=`<section><div class="sh"><h2>What to watch</h2><p>Ranked by storyline, form and stakes</p></div><div class="board">${games}</div></section>`;
@@ -566,11 +619,11 @@ function renderLive(){
     const tl=(a,s,win)=>{const k=c.gid+a,bp=prevScore[k]!==undefined&&prevScore[k]!==s;prevScore[k]=s;return `<div class="tl ${fin&&!win?'lose':''}"><div class="nm">${tag(a)}<span>${esc(T(a).short)}</span></div><div class="pts num"><span class="${bp?'bump':''}">${s}</span></div></div>`};
     const lit=fin?0:Math.max(1,Math.min(5,Math.round((c.heat||0)/22)));
     const meter=fin?'':`<span class="heat ${lit>=5?'max':''}" role="img" aria-label="Heat ${lit} of 5">${[1,2,3,4,5].map(i=>`<i class="${i<=lit?'on':''} ${i<=lit&&i>=4?'red':''}"></i>`).join('')}</span>`;
-    return `<article class="sr ${idx===0&&gm.length>1?'feat':''} ${!fin&&(c.heat||0)>=60?'hotg':''} ${inOT?'otcard':''} ${crunch?'crunch':''} ${fl}">
-      <div class="st"><span class="${fin?'muted':'clk'}">${fin?(c.period>=5?'Final/OT':'Final'):esc(qd(c.detail))}</span>${meter}${inOT?'<span class="otpill ot">OVERTIME</span>':''}${onfire?FIRE:''}</div>
+    return `<article class="sr ${idx===0&&gm.length>1?'feat':''} ${!fin&&(c.heat||0)>=60?'hotg':''} ${c.cup?'cup':''} ${inOT?'otcard':''} ${crunch?'crunch':''} ${fl}">
+      <div class="st"><span class="${fin?'muted':'clk'}">${fin?(c.period>=5?'Final/OT':'Final'):esc(qd(c.detail))}</span>${meter}${cupb(c.cup)}${inOT?'<span class="otpill ot">OVERTIME</span>':''}${onfire?FIRE:''}</div>
       <div class="sc">${tl(c.away,c.as,!hw)}${tl(c.home,c.hs,hw)}</div><div class="fl">${flow({gid:c.gid,home:c.home,away:c.away,flow:c.flow})}</div>
       <div class="in">${c.why?`<div class="whyl">${esc(c.why)}</div>`:''}${c.state==='in'?tvLine(c.tv,c.away,c.home):''}<div class="tags">${(c.tags||[]).map(x=>`<span class="pill ${/-0 run$/.test(x)?'runp':''}">${esc(x)}</span>`).join('')}</div>
-      <div class="perf">${(c.top||[]).slice(0,2).map(p=>`<span><b>${esc(p.name)}</b> ${p.pts} pts${p.reb?`, ${p.reb} reb`:''}${p.ast?`, ${p.ast} ast`:''}</span>`).join('')}</div></div></article>`}).join('');
+      <div class="perf">${(c.top||[]).slice(0,2).map(p=>`<span><b>${esc(p.name)}</b> ${p.pts} pts${p.reb?`, ${p.reb} reb`:''}${p.ast?`, ${p.ast} ast`:''}</span>`).join('')}</div>${gl(c.gid,'Game page')}</div></article>`}).join('');
   const mxr=Math.max(...(L.hotnow||[]).map(p=>p.recent),1);
   const hotnow=(L.hotnow||[]).map(p=>`<div class="pr"><div class="big num">${p.recent}<small>last ${p.mins} min</small></div><div class="who">${tag(p.team)} <b class="nmx">${esc(p.name)}</b><div class="statrow"><div class="sc2"><b>${p.pts}</b><span>PTS TOTAL</span></div></div><span class="gm">${esc(p.game)}</span></div><div class="bar"><i style="width:${Math.round(p.recent/mxr*100)}%"></i></div></div>`).join('');
   const KEYLAB={pts:'pts',reb:'reb',ast:'ast',stl:'stl',blk:'blk',tpm:'threes'};
@@ -590,7 +643,7 @@ function renderLive(){
   const watch=watchF.map(({p,m})=>{const [k,v,lab]=m,w=typeof v==='number'?v:p.score;return `<div class="pr ${p.score>=90?'hotp':''}"><div class="big num">${v}<small>${lab}</small></div><div class="who">${tag(p.team)} <b class="nmx">${esc(p.name)}</b>${p.score>=90?' ${FIRE}':''}${statrow(p,k,k)}${extra(p)}<span class="gm">${esc(p.game)}${p.live?' · live':' · final'}</span></div><div class="bar"><i style="width:${Math.round(w/mxs*100)}%"></i></div></div>`}).join('');
   const pchip=(k,l)=>`<button class="chip" data-pf="${k}" aria-pressed="${pf===k}">${l}</button>`;
   const fl2=(L.feed||[]).filter(e=>(ff==='all'&&!(e.kind==='clip'&&e.imp<=1))||(ff==='big'&&e.imp>=4)||(ff==='players'&&(e.kind==='player'||e.kind==='record'))||(ff==='clips'&&e.kind==='clip'));
-  const feed=fl2.slice(0,40).map(e=>`<div class="ev ${e.imp>=4?'big':''} ${fresh[e.id]>Date.now()?'fresh':''}"><div class="ag">${esc(ago(e.ts))}</div><div><span class="lab k-${K2[e.kind]||'rout'}">${esc(KL[e.kind]||e.kind)}</span>${e.kind==='clip'&&e.imp>=3?'<span class="hotclip">HOT</span>':''}<div class="tx">${e.u?`<a href="${esc(e.u)}" target="_blank" rel="noopener">${IC.play}${esc(e.text)}</a>`:esc(e.text)}</div><div class="mt"><span>${esc(e.game)}</span><span>${esc(e.when)}</span><span>${esc(e.score)}</span></div></div></div>`).join('')||'<div class="ev"><div class="ag"></div><div class="empty">Nothing yet. Moments show up here as they happen.</div></div>';
+  const feed=fl2.slice(0,40).map(e=>`<div class="ev ${e.imp>=4?'big':''} ${fresh[e.id]>Date.now()?'fresh':''}"><div class="ag">${esc(ago(e.ts))}</div><div><span class="lab k-${K2[e.kind]||'rout'}">${esc(KL[e.kind]||e.kind)}</span>${e.kind==='clip'&&e.imp>=3?'<span class="hotclip">HOT</span>':''}<div class="tx">${e.u?`<a href="${esc(e.u)}" target="_blank" rel="noopener">${IC.play}${esc(e.text)}</a>`:esc(e.text)}</div><div class="mt">${e.gid&&!String(e.gid).startsWith('demo')?`<a class="gl" href="#game-${e.gid}">${esc(e.game)}</a>`:`<span>${esc(e.game)}</span>`}<span>${esc(e.when)}</span><span>${esc(e.score)}</span></div></div></div>`).join('')||'<div class="ev"><div class="ag"></div><div class="empty">Nothing yet. Moments show up here as they happen.</div></div>';
   const fchip=(k,l)=>`<button class="chip" data-ff="${k}" aria-pressed="${ff===k}">${l}</button>`;
   const sg=`<section><div class="sh"><div class="row">${badge}<h2>${L.mode==='final'?'Tonight’s final':'Hot games'}</h2></div><p>${L.live?L.live+' in progress · ':''}updated ${esc(ago(L.updated))}${L.lag!=null&&L.mode==='live'?' · feed is about '+L.lag+'s behind the play':''}</p></div>
       <div class="board">${rows||'<p class="empty">No games have started yet.</p>'}</div>
@@ -624,16 +677,16 @@ function renderFinal(){
   const lede=`${N.games} games. ${must?`<b>${must} worth your time</b>`:'<b>A quieter night</b>'}${ups?`, ${ups} upset${ups>1?'s':''}`:''}. The best of it: <b>${esc(T(best.away).short)} at ${esc(T(best.home).short)}</b>, ${best.hs>best.as?esc(best.hs+'-'+best.as):esc(best.as+'-'+best.hs)}${best.comeback>=12?` after a ${best.comeback}-point comeback`:best.lc>=8?` with ${best.lc} lead changes`:''}.`;
   const top=N.stories.map((s,i)=>{
     const v=s.u?{u:s.u}:pickVideo(s,cards[s.gid]),k=KIND[s.kind]||'rout';
-    return `<li class="${i===0?'first':''}"><div class="rk">${i+1}</div><div><span class="lab k-${k}">${esc(s.label)}</span><div class="hd">${esc(s.head)}</div><div class="facts">${s.game?`<span>${esc(s.game)}</span>`:''}${(s.facts||[]).map(f=>`<span>${esc(f)}</span>`).join('')}</div></div>${v?`<a class="watch" href="${esc(v.u)}" target="_blank" rel="noopener">${IC.play}Watch</a>`:''}</li>`}).join('')||'<li class="empty" style="padding:16px">No standout stories this night.</li>';
+    return `<li class="${i===0?'first':''}"><div class="rk">${i+1}</div><div><span class="lab k-${k}">${esc(s.label)}</span><div class="hd">${esc(s.head)}</div><div class="facts">${s.game&&s.gid?`<a class="gl" href="#game-${s.gid}">${esc(s.game)}</a>`:s.game?`<span>${esc(s.game)}</span>`:''}${(s.facts||[]).map(f=>`<span>${esc(f)}</span>`).join('')}</div></div>${v?`<a class="watch" href="${esc(v.u)}" target="_blank" rel="noopener">${IC.play}Watch</a>`:''}</li>`}).join('')||'<li class="empty" style="padding:16px">No standout stories this night.</li>';
   const rows=N.cards.map((c,idx)=>{
     const [vc,vt]=verdict(c),hw=c.hs>c.as;
     const vids=(c.videos||[]).slice(0,3).map(v=>`<a href="${esc(v.u)}" target="_blank" rel="noopener">${IC.play}${esc(cut(v.t.replace(/^.*?: /,''),58))}</a>`).join('');
     const m=c.moment&&c.moment.swing>=0.06?`<div class="moment"><b>Swing play, ${esc(c.moment.when)}:</b> ${esc(c.moment.text)} <span>(${esc(c.moment.score)})</span></div>`:'';
     const tl=(a,s,win)=>`<div class="tl ${win?'':'lose'}"><div class="nm">${tag(a)}<span>${esc(T(a).short)}</span></div><div class="pts num">${s}</div></div>`;
-    return `<article class="sr rc ${idx===0?'feat':''}"><div class="st"><span class="vd ${vc}">${vt}</span><span class="muted">Thrill ${Math.round(c.thrill)}</span></div>
+    return `<article class="sr rc ${idx===0?'feat':''} ${c.cup?'cup':''}"><div class="st">${cupb(c.cup)}<span class="vd ${vc}">${vt}</span><span class="muted">Thrill ${Math.round(c.thrill)}</span></div>
       <div class="sc">${tl(c.away,c.as,!hw)}${tl(c.home,c.hs,hw)}</div><div class="fl">${flow(c)}</div>
       <div class="in"><div class="tags">${c.tags.map(t=>`<span class="pill">${esc(t)}</span>`).join('')}</div>${c.headline?`<p class="recap">${esc(c.headline)}</p>`:''}${m}
-      <div class="perf">${c.top.map(p=>`<span><b>${esc(p.name)}</b> ${p.pts} pts, ${p.reb} reb, ${p.ast} ast · ${esc(p.fg)} FG</span>`).join('')}</div>${vids?`<div class="vids">${vids}</div>`:''}</div></article>`}).join('');
+      <div class="perf">${c.top.map(p=>`<span><b>${esc(p.name)}</b> ${p.pts} pts, ${p.reb} reb, ${p.ast} ast · ${esc(p.fg)} FG</span>`).join('')}</div>${vids?`<div class="vids">${vids}</div>`:''}${gl(c.gid,'Story and full stats')}</div></article>`}).join('');
   const arc=(L&&L.mode==='final'&&L.slate===night&&L.feed&&L.feed.length)?`<section><div class="sh"><h2>How it unfolded</h2><p>The big moments, in order</p></div><div class="feed">${L.feed.filter(e=>e.imp>=4).slice().reverse().slice(0,25).map(e=>`<div class="ev big"><div class="ag">${esc(e.when)}</div><div><span class="lab k-${K2[e.kind]||'rout'}">${esc(KL[e.kind]||e.kind)}</span><div class="tx">${e.u?`<a href="${esc(e.u)}" target="_blank" rel="noopener">${IC.play}${esc(e.text)}</a>`:esc(e.text)}</div><div class="mt"><span>${esc(e.game)}</span><span>${esc(e.score)}</span></div></div></div>`).join('')}</div></section>`:'';
   const stop=`<section><div class="sh"><h2>Best moments of the night</h2><p>Ranked by how much a fan missed</p></div><ol class="top">${top}</ol></section>`;
   const sgames=`<section><div class="sh"><h2>Every game, ranked</h2><p>The curve shows who was winning, minute by minute</p></div><div class="board">${rows}</div></section>`;
@@ -669,6 +722,109 @@ function tvLine(tv,away,home){
 }
 function tvShort(tv,away,home){const {nat,loc}=tvParts(tv,away,home);return nat.length?nat.join(', '):loc.length?loc[0][1][0]:''}
 
+const gl=(gid,label)=>gid?`<a class="gl" href="#game-${gid}">${label} ›</a>`:'';
+const cupb=x=>x?`<span class="cupb">${esc(x)}</span>`:'';
+
+/* ---------- game page: story first, full stats second ---------- */
+const GAME={gid:null,tab:'story',back:'live-games',loading:null};const GDATA={};let GSORT={key:null,dir:-1};
+const BXORD=['MIN','PTS','REB','AST','STL','BLK','TO','FG','3PT','FT','OREB','DREB','PF','+/-'];
+const nv=v=>{const m=String(v==null?'':v).match(/^([+-]?\d+)/);return m?+m[1]:-1e9};
+const pobj=(labels,stats)=>{const o={};labels.forEach((l,i)=>o[l]=stats[i]);return o};
+async function loadGame(gid){
+  if(GAME.loading===gid)return;GAME.loading=gid;
+  const g=await pull('game/'+gid);GAME.loading=null;
+  GDATA[gid]=(g&&g.teams)?Object.assign(g,{_t:Date.now()}):{err:true,_t:Date.now()};
+  if(userMode==='game'&&GAME.gid===gid)renderGame();
+}
+function gTeam(t,right,fin,pre){
+  return `<div class="gtm ${right?'r':''} ${fin&&!t.winner?'lose':''}">${tag(t.abbr)}<div class="gtn"><b>${esc(t.short||t.name)}</b><small>${esc(t.record||'')}</small></div><div class="gsc num">${pre?'':t.score}</div></div>`;
+}
+function renderGame(){
+  const el=$('#m-game'),gid=GAME.gid,G=GDATA[gid];
+  if(!G){GAME.drawn=null;el.innerHTML='<a class="back" href="#'+GAME.back+'">‹ Back</a><p class="empty">Loading the game…</p>';loadGame(gid);return}
+  if(G.err){GAME.drawn=null;el.innerHTML='<a class="back" href="#'+GAME.back+'">‹ Back</a><p class="empty">This game could not be loaded right now. It will retry in a few seconds.</p>';return}
+  const key=gid+'|'+GAME.tab+'|'+G._t+'|'+GSORT.key+GSORT.dir;
+  if(GAME.drawn===key)return;GAME.drawn=key;
+  el.className='mode '+enterCls('game-'+gid+GAME.tab);
+  const [A,H]=G.teams,fin=G.state==='post',pre=G.state==='pre',live=G.state==='in',st=G.story||{};
+  const pv=(P&&P.games||[]).find(x=>x.gid===gid);
+  const head=`<a class="back" href="#${GAME.back}">‹ Back</a>
+    <section class="gph ${G.cup?'cup':''}"><div class="gstat">${cupb(G.cup)}<span class="${live?'clk':'muted'}">${pre?esc('Tip-off '+tlabel(G.date)+' '+TZ):esc(qd(G.detail||''))}</span>${live?'<span class="badge"><i></i>Live</span>':''}</div>
+      <div class="gteams">${gTeam(A,false,fin,pre)}<span class="gat">at</span>${gTeam(H,true,fin,pre)}</div>
+      ${tvLine(G.tv,A.abbr,H.abbr)}
+      <div class="ginfo">${[G.info.venue,G.info.city].filter(Boolean).map(esc).join(', ')}${G.info.attendance?' · '+Number(G.info.attendance).toLocaleString()+' fans':''}</div></section>`;
+  const items=[['story','Story',null],['box','Box score',null]];
+  const menu_=`<nav class="submenu" aria-label="Game sections">${items.map(([k,l])=>`<button data-gt="${k}" aria-pressed="${GAME.tab===k}">${l}</button>`).join('')}</nav>`;
+  el.innerHTML=head+menu_+(GAME.tab==='box'?gameBox(G):gameStory(G,pv));
+  el.querySelectorAll('[data-gt]').forEach(b=>b.onclick=()=>{GAME.tab=b.dataset.gt;history.replaceState(null,'','#game-'+gid+(GAME.tab==='box'?'-box':''));renderGame()});
+  el.querySelectorAll('[data-sk]').forEach(b=>b.onclick=()=>{const k=b.dataset.sk;GSORT=GSORT.key===k?{key:k,dir:-GSORT.dir}:{key:k,dir:k==='Player'?1:-1};renderGame()});
+  const cta=el.querySelector('.gcta');if(cta)cta.onclick=()=>{GAME.tab='box';history.replaceState(null,'','#game-'+gid+'-box');renderGame();window.scrollTo({top:0})};
+  stagger('.ev,.so',el);
+}
+function gameStory(G,pv){
+  const [A,H]=G.teams,fin=G.state==='post',pre=G.state==='pre',st=G.story||{};
+  if(pre){
+    const why=pv&&pv.why&&pv.why.length?`<ul class="why">${pv.why.map(w=>`<li>${esc(w)}</li>`).join('')}</ul>`:'';
+    const kp=pv?`<div class="kp">${(pv.key||[]).map(p=>`<span class="kpi"><b>${esc(p.name)}</b><em>${p.ppg} ppg</em></span>`).join('')}</div>`:'';
+    const inj=pv?(pv.inj||[]).map(x=>`${esc(x.name)} (${esc(x.team)}) ${esc(x.status.toLowerCase())}`).join(' · '):'';
+    return `<section><div class="sh"><h2>The matchup</h2><p>The story fills in from tip-off</p></div>${why||'<p class="empty">Storylines appear in the morning preview.</p>'}${kp}${inj?`<div class="out">${inj}</div>`:''}</section>`;
+  }
+  const lede=fin?(st.headline||`Final: ${A.short} ${A.score}, ${H.short} ${H.score}`):(G.why||'In progress');
+  const f=[];
+  if(st.lead_changes!=null)f.push(`${st.lead_changes} lead change${st.lead_changes===1?'':'s'}`);
+  if(st.max_lead)f.push(`Biggest leads: ${A.abbr} ${st.max_lead[A.abbr]||0}, ${H.abbr} ${st.max_lead[H.abbr]||0}`);
+  if(st.run&&st.run.pts>=8)f.push(`Biggest run: ${st.run.team} ${st.run.pts}-0, ${st.run.from} to ${st.run.to}`);
+  if(fin&&st.comeback>=8){const w=A.winner?A:H;f.push(`${w.short} came back from ${st.comeback} down`)}
+  if(st.winshot)f.push(`${st.winshot.sec<=1.5?'Buzzer-beater':'Game-winner'}: ${st.winshot.text}`);
+  if(st.tieshot)f.push(`Forced overtime: ${st.tieshot.text}`);
+  // key moments: the live feed for this game if we watched it, else the biggest swing plays
+  let km=(G.feed||[]).filter(e=>e.kind!=='clip'||e.imp>=2);
+  const kmHtml=km.length?km.map(e=>`<div class="ev ${e.imp>=4?'big':''}"><div class="ag">${esc(e.when)}</div><div><span class="lab k-${K2[e.kind]||'rout'}">${esc(KL[e.kind]||e.kind)}</span><div class="tx">${e.u?`<a href="${esc(e.u)}" target="_blank" rel="noopener">${IC.play}${esc(e.text)}</a>`:esc(e.text)}</div><div class="mt"><span>${esc(e.score)}</span></div></div></div>`).join('')
+    :(st.moments||[]).map(m=>`<div class="ev"><div class="ag">${esc(m.when)}</div><div><span class="lab k-drama">Swing play</span><div class="tx">${esc(m.text)}</div><div class="mt"><span>${esc(m.score)}</span></div></div></div>`).join('');
+  // who decided it: top two on each side
+  const tops=G.teams.map(t=>{const pl=G.players[t.abbr];if(!pl)return '';
+    return pl.rows.filter(r=>!r.dnp).map(r=>{const o=pobj(pl.labels,r.stats);return {r,o,sc:nv(o.PTS)+.8*nv(o.REB)+nv(o.AST)+2*(nv(o.STL)+nv(o.BLK))}})
+      .sort((a,b)=>b.sc-a.sc).slice(0,2).map(({r,o})=>`<div class="so"><div><div class="nm2">${tag(t.abbr)} ${esc(r.name)}</div>${statrow({pts:nv(o.PTS),reb:nv(o.REB),ast:nv(o.AST),stl:nv(o.STL),blk:nv(o.BLK),tpm:nv(o['3PT'])},null)}<div class="ln">${esc(o.FG||'')} FG · ${esc(o['3PT']||'')} 3PT · ${esc(o.MIN||'')} min</div></div></div>`).join('')}).join('');
+  const vids=(st.videos||[]).filter(v=>!/game highlights/i.test(v.t)).slice(0,6).map(v=>`<a href="${esc(v.u)}" target="_blank" rel="noopener">${IC.play}${esc(cut(v.t,64))}</a>`).join('');
+  const reel=(st.videos||[]).find(v=>/game highlights/i.test(v.t));
+  const plays=G.state==='in'&&G.plays&&G.plays.length?`<section><div class="sh"><h2>Latest plays</h2><p>Newest first</p></div><div class="feed">${G.plays.slice(0,10).map(x=>`<div class="ev ${x.scoring?'big':''}"><div class="ag">${esc((x.per>4?'OT ':'Q'+x.per+' ')+(x.clock||''))}</div><div><div class="tx">${esc(x.text)}</div><div class="mt"><span>${esc(A.abbr)} ${x.a} · ${esc(H.abbr)} ${x.h}</span></div></div></div>`).join('')}</div></section>`:'';
+  return `<p class="lede">${esc(lede)}</p>${st.recap?`<p class="grecap">${esc(st.recap.replace(/^\s*—\s*/,''))}</p>`:''}
+    ${f.length?`<div class="gfacts">${f.map(x=>`<span class="pill">${esc(x)}</span>`).join('')}</div>`:''}
+    ${st.flow&&st.flow.length>1?`<section><div class="sh"><h2>How it swung</h2><p>Who was winning, minute by minute</p></div><div class="gflow">${flow({gid:'g'+G.gid,home:H.abbr,away:A.abbr,flow:st.flow})}</div></section>`:''}
+    ${plays}
+    ${kmHtml?`<section><div class="sh"><h2>Key moments</h2><p>${(G.feed||[]).length?'As they happened':'The plays that swung it most'}</p></div><div class="feed">${kmHtml}</div></section>`:''}
+    ${tops?`<section><div class="sh"><h2>Who decided it</h2><p>Top two on each side</p></div><div class="feed">${tops}</div></section>`:''}
+    ${vids||reel?`<section><div class="sh"><h2>Highlights</h2><p>Opens ESPN</p></div><div class="vids">${reel?`<a href="${esc(reel.u)}" target="_blank" rel="noopener">${IC.play}Full game highlights</a>`:''}${vids}</div></section>`:''}
+    <button class="gcta" type="button">Full box score ›</button>`;
+}
+function gameBox(G){
+  const [A,H]=G.teams;
+  if(!Object.keys(G.players||{}).length)return '<p class="empty">The box score appears once the game tips off.</p>';
+  const nq=Math.max(...G.teams.map(t=>t.line.length),4);
+  const qh=[...Array(nq)].map((_,i)=>`<th>${i<4?'Q'+(i+1):(i===4?'OT':(i-3)+'OT')}</th>`).join('');
+  const ls=`<div class="bxw" style="border:0"><table class="ls"><thead><tr><th>Team</th>${qh}<th>T</th></tr></thead><tbody>${G.teams.map(t=>`<tr><td>${tag(t.abbr)}</td>${[...Array(nq)].map((_,i)=>`<td>${esc(t.line[i]||'')}</td>`).join('')}<td class="t">${t.score}</td></tr>`).join('')}</tbody></table></div>`;
+  const tc=(G.compare||[]).map(c=>{const a=parseFloat(c.vals[0])||0,b=parseFloat(c.vals[1])||0,mx=Math.max(a,b,1);
+    const aw=c.low?a<b:a>b,bw=c.low?b<a:b>a;
+    return `<div class="tc"><div class="v ${aw?'best':''}">${esc(c.vals[0])}</div><div><div class="lb">${esc(c.label)}</div><div class="bars"><span class="${aw?'w':''}"><i style="width:${Math.round(a/mx*100)}%"></i></span><span class="${bw?'w':''}"><i style="width:${Math.round(b/mx*100)}%"></i></span></div></div><div class="v r ${bw?'best':''}">${esc(c.vals[1])}</div></div>`}).join('');
+  const tables=G.teams.map(t=>{const pl=G.players[t.abbr];if(!pl)return '';
+    const idx=BXORD.map(k=>pl.labels.indexOf(k));const cols=BXORD.filter((k,i)=>idx[i]>=0);
+    const played=pl.rows.filter(r=>!r.dnp),dnp=pl.rows.filter(r=>r.dnp);
+    const val=(r,k)=>r.stats[pl.labels.indexOf(k)];
+    const tops={};cols.forEach(k=>{if(k==='MIN')return;tops[k]=Math.max(...played.map(r=>nv(val(r,k))))});
+    const row=r=>`<tr><td class="pn"><b>${esc(r.name)}</b><small>${esc(r.pos)}</small></td>${cols.map(k=>{const v=val(r,k);return `<td class="${k!=='MIN'&&tops[k]>0&&nv(v)===tops[k]?'top':''}">${esc(v==null?'':v)}</td>`}).join('')}</tr>`;
+    let body;
+    if(GSORT.key){const k=GSORT.key;const srt=[...played].sort((x,y)=>k==='Player'?x.name.localeCompare(y.name)*GSORT.dir:(nv(val(x,k))-nv(val(y,k)))*GSORT.dir);body=srt.map(row).join('')}
+    else body=`<tr class="sub"><td colspan="${cols.length+1}">Starters</td></tr>${played.filter(r=>r.starter).map(row).join('')}<tr class="sub"><td colspan="${cols.length+1}">Bench</td></tr>${played.filter(r=>!r.starter).map(row).join('')}`;
+    const tot=pl.totals&&pl.totals.length?`<tr class="tot"><td>Team</td>${cols.map(k=>`<td>${esc(pl.totals[pl.labels.indexOf(k)]||'')}</td>`).join('')}</tr>`:'';
+    const th=['Player',...cols].map(k=>`<th ${GSORT.key===k?`aria-sort="${GSORT.dir>0?'ascending':'descending'}"`:''}><button data-sk="${esc(k)}" aria-label="Sort by ${esc(k)}">${esc(k)}</button></th>`).join('');
+    return `<div class="bxh">${tag(t.abbr)} ${esc(t.name||t.short)}</div><div class="bxw"><table class="bx"><thead><tr>${th}</tr></thead><tbody>${body}${tot}</tbody></table></div>${dnp.length?`<p class="dnp">Did not play: ${dnp.map(r=>esc(r.name)+(r.reason?` (${esc(r.reason.toLowerCase())})`:'')).join(', ')}</p>`:''}`}).join('');
+  const off=(G.info.officials||[]).length?`<p class="dnp">Officials: ${G.info.officials.map(esc).join(', ')}</p>`:'';
+  return `<section><div class="sh"><h2>Line score</h2><p>Points by quarter</p></div>${ls}</section>
+    ${tc?`<section><div class="sh"><h2>Team stats</h2><p>The better side is highlighted</p></div><div>${tc}</div></section>`:''}
+    <section><div class="sh"><h2>Players</h2><p>Tap a column to sort. Team leaders highlighted.</p></div>${tables}${off}</section>`;
+}
+setInterval(()=>{const G=GAME.gid&&GDATA[GAME.gid];if(userMode==='game'&&G&&(G.err||G.state!=='post')&&Date.now()-G._t>18000)loadGame(GAME.gid)},5000);
+
 /* ---------- watch now ---------- */
 function renderWatchNow(cur){
   const el=$('#watchnow');if(!el)return;
@@ -692,14 +848,24 @@ function renderAll(){
   $('#modebar').innerHTML=MODES.map(([k,l])=>`<button role="tab" data-m="${k}" aria-selected="${k===cur}">${l}${k===auto?'<span class="now">NOW</span>':''}${k==='live'&&L&&L.mode==='live'?'<span class="badge" style="padding:2px 6px"><i></i></span>':''}</button>`).join('');
   document.querySelectorAll('[data-m]').forEach(b=>b.onclick=()=>{userMode=b.dataset.m;history.replaceState(null,'','#'+userMode);window.scrollTo({top:0});renderAll()});
   for(const [k] of MODES) $('#m-'+k).hidden=k!==cur;
+  $('#m-game').hidden=cur!=='game';if(cur!=='game')GAME.drawn=null;
   renderWatchNow(cur);
-  ({preview:renderPreview,live:renderLive,final:renderFinal})[cur]();
-  $('#eyebrow').textContent=D.sport+' · '+(cur==='preview'?'morning preview':cur==='live'?'live now':'daily recap');
+  ({preview:renderPreview,live:renderLive,final:renderFinal,game:renderGame})[cur]();
+  $('#eyebrow').textContent=D.sport+' · '+(cur==='preview'?'morning preview':cur==='live'?'live now':cur==='game'?'game':'daily recap');
   const t=new Date(Math.max(new Date(D.updated),L?new Date(L.updated):0)).toLocaleString(undefined,{month:'short',day:'numeric',hour:'numeric',minute:'2-digit'});
   $('#syncTxt').textContent=(synced?'Synced · ':'Snapshot · ')+'updated '+t;$('#dot').className='dot'+(synced?' live':'');
 }
-{const h=location.hash.slice(1),[m,s]=h.split('-');if(['preview','live','final'].includes(m)){userMode=m;if(s)SEC[m]=s}}
-window.addEventListener('hashchange',()=>{const [m,s]=location.hash.slice(1).split('-');if(['preview','live','final'].includes(m)){userMode=m;if(s)SEC[m]=s;renderAll()}});
+function applyHash(){
+  const parts=location.hash.slice(1).split('-'),m=parts[0];
+  if(m==='game'&&/^\d+$/.test(parts[1]||'')){
+    if(userMode!=='game')GAME.back=userMode?userMode+'-'+SEC[userMode]:autoMode();
+    if(GAME.gid!==parts[1])GSORT={key:null,dir:-1};
+    GAME.gid=parts[1];GAME.tab=parts[2]==='box'?'box':'story';userMode='game';window.scrollTo({top:0});return true}
+  if(['preview','live','final'].includes(m)){userMode=m;if(parts[1])SEC[m]=parts[1];return true}
+  return false;
+}
+applyHash();
+window.addEventListener('hashchange',()=>{if(applyHash())renderAll()});
 setInterval(()=>{if(L&&L.mode!=='final'&&(userMode||autoMode())==='live')renderLive()},20000);
 async function pull(name){try{const r=await fetch('/api/'+name,{cache:'no-store'});return r.ok?await r.json():null}catch(e){return null}}
 function takeLive(d){

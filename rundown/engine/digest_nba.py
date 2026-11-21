@@ -233,6 +233,9 @@ def build_night(date):
                       'run':g.get('run'),'moment':m,'top':[{'name':p['name'],'team':p['team'],'pts':p['pts'],'reb':p['reb'],'ast':p['ast'],'fg':p['fg']} for p in pl],
                       'videos':g['videos'][:6]})
     standouts.sort(key=lambda x:-x['score'])
+    try: evs=json.load(open('cache/nba_events.json'))
+    except Exception: evs={}
+    for c_ in cards: c_['cup']=(evs.get(c_['gid']) or ['','',''])[2] if len(evs.get(c_['gid']) or [])>2 else ''
     return {'date':date,'games':len(gs),'stories':top,'cards':cards,'standouts':standouts[:60],
             'pts':sum(g['hs']+g['as'] for g in gs)}
 dates=sorted({g['date'] for g in G})[-4:]

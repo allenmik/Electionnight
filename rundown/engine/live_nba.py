@@ -131,6 +131,15 @@ def analyze_live(s,status):
             'videos':vids,'players':players,'headline':(s.get('article') or {}).get('headline'),'box_live':bool(box)}
 
 
+def cup_label(comp):
+    """'NBA Cup · Group Play' when ESPN notes the game as an NBA Cup game, else ''."""
+    for n in comp.get('notes') or []:
+        h = n.get('headline') or ''
+        if 'nba cup' in h.lower():
+            rest = h.split('-', 1)[1].strip() if '-' in h else ''
+            return 'NBA Cup' + (' · ' + rest if rest else '')
+    return ''
+
 def networks(comp):
     """Where to watch, from an ESPN competition: [{'n': name, 'm': national|home|away, 't': TV|Streaming}]."""
     out=[]
@@ -318,13 +327,13 @@ def poll(replay=None):
             srcs.append((e['id'],None,{'state':stt,'period':e['status'].get('period'),'clock':e['status'].get('displayClock'),'detail':ty.get('shortDetail'),'time':e['date'],
                          'teams':{c['homeAway']:c['team']['abbreviation'] for c in e['competitions'][0]['competitors']},
                          'scores':{c['homeAway']:int(c.get('score') or 0) for c in e['competitions'][0]['competitors']},
-                         'tv':networks(e['competitions'][0])}))
+                         'tv':networks(e['competitions'][0]),'cup':cup_label(e['competitions'][0])}))
     if st.get('slate')!=slate:
         st={'slate':slate,'games':{},'feed':[]}
     for gid,summ,status in srcs:
         state=status['state']
         if state=='pre':
-            games.append({'gid':gid,'state':'pre','away':status['teams']['away'],'home':status['teams']['home'],'time':status.get('time'),'heat':0,'tags':[],'tv':status.get('tv') or []});continue
+            games.append({'gid':gid,'state':'pre','away':status['teams']['away'],'home':status['teams']['home'],'time':status.get('time'),'heat':0,'tags':[],'tv':status.get('tv') or [],'cup':status.get('cup','')});continue
         if summ is None:
             gs=st['games'].get(gid,{})
             if state=='post' and gs.get('done'):
@@ -340,7 +349,7 @@ def poll(replay=None):
         ev=detect(gid,g,state,st,status,highs,now,mode);newev+=ev
         top=[{'name':p['name'],'team':p['team'],'pts':p['pts'],'reb':p['reb'],'ast':p['ast'],'tpm':p['tpm']} for p in g['players'][:3]]
         card={'gid':gid,'state':state,'away':g['away'],'home':g['home'],'as':g['as'],'hs':g['hs'],'period':g['period'],'clock':g['clock'],
-              'detail':status.get('detail') or (f"{ql(g['period'])} {g['clock']}"),'margin':abs(g['hs']-g['as']),'heat':heat_score(g,state),'why':why_watch(g,state),'tv':status.get('tv') or [],
+              'detail':status.get('detail') or (f"{ql(g['period'])} {g['clock']}"),'margin':abs(g['hs']-g['as']),'heat':heat_score(g,state),'why':why_watch(g,state),'tv':status.get('tv') or [],'cup':status.get('cup',''),
               'tags':tags_for(g,state),'flow':g['flow'],'lc':g['lead_changes'],'run':({'team':g['run']['team'],'pts':g['run']['pts']} if g['run'] and state=='in' else None),
               'top':top,'headline':g['headline'] if state=='post' else None,
               'hot':[{'name':p['name'],'team':p['team'],'pts':p['pts'],'reb':p['reb'],'ast':p['ast'],'stl':p['stl'],'blk':p['blk'],'tpm':p['tpm'],**h} for p in g['players'] for h in [hot_reasons(p)] if h]}

@@ -27,6 +27,7 @@ os.chdir(DATA)                       # the engine reads and writes relative to t
 os.environ['RUNDOWN_DATA'] = DATA
 sys.path.insert(0, ENGINE)
 import live_nba                      # noqa: E402  (needs the path set above)
+import analyze_nba                   # noqa: E402
 from tzcompat import ET              # noqa: E402  US Eastern, works without a time-zone database
 
 STATE = {'live': None, 'digest': None, 'preview': None, 'preview_for': None, 'maintained_for': None}
@@ -157,6 +158,103 @@ def live_loop():
         time.sleep(wait)
 
 
+# ---------------------------------------------------------------- one game: story first, full stats second
+GAME_CACHE = {}
+TEAM_STATS = [('fieldGoalPct', 'Field goal %'), ('threePointFieldGoalPct', '3-point %'), ('freeThrowPct', 'Free throw %'),
+              ('totalRebounds', 'Rebounds'), ('offensiveRebounds', 'Offensive rebounds'), ('assists', 'Assists'),
+              ('steals', 'Steals'), ('blocks', 'Blocks'), ('totalTurnovers', 'Turnovers'), ('turnoverPoints', 'Points off turnovers'),
+              ('pointsInPaint', 'Points in the paint'), ('fastBreakPoints', 'Fast-break points'), ('largestLead', 'Largest lead'),
+              ('fouls', 'Fouls')]
+LOWER_IS_BETTER = {'totalTurnovers', 'fouls'}
+
+
+def build_game(s, gid):
+    hc = s['header']['competitions'][0]
+    st = hc['status']['type']
+    comps = sorted(hc['competitors'], key=lambda c: c['homeAway'] != 'away')          # away first
+    teams = []
+    for c in comps:
+        t = c['team']
+        teams.append({'abbr': t['abbreviation'], 'name': t.get('displayName'), 'short': t.get('shortDisplayName') or t.get('name'),
+                      'color': '#' + (t.get('color') or '777777'), 'score': int(c.get('score') or 0), 'home': c['homeAway'] == 'home',
+                      'line': [l.get('displayValue') for l in c.get('linescores') or []], 'winner': bool(c.get('winner')),
+                      'record': next((r.get('summary') for r in c.get('record') or [] if r.get('type') == 'total'), None)})
+    order = [t['abbr'] for t in teams]
+    # team comparison
+    tstats = {}
+    for bt in s.get('boxscore', {}).get('teams', []):
+        vals = {x.get('name'): x.get('displayValue') for x in bt.get('statistics', [])}
+        tstats[bt['team']['abbreviation']] = vals
+    compare = []
+    for key, label in TEAM_STATS:
+        if all(key in tstats.get(a, {}) for a in order):
+            compare.append({'key': key, 'label': label, 'vals': [tstats[a][key] for a in order], 'low': key in LOWER_IS_BETTER})
+    # full player lines
+    players = {}
+    for bp in s.get('boxscore', {}).get('players', []):
+        grp = (bp.get('statistics') or [{}])[0]
+        rows = []
+        for a in grp.get('athletes', []):
+            ath = a.get('athlete', {})
+            rows.append({'id': ath.get('id'), 'name': ath.get('displayName'), 'pos': (ath.get('position') or {}).get('abbreviation', ''),
+                         'num': ath.get('jersey', ''), 'starter': bool(a.get('starter')), 'dnp': bool(a.get('didNotPlay')) or not a.get('stats'),
+                         'reason': (a.get('reason') or '').title() if a.get('didNotPlay') else '', 'stats': a.get('stats') or []})
+        players[bp['team']['abbreviation']] = {'labels': grp.get('labels', []), 'rows': rows, 'totals': grp.get('totals', [])}
+    # the story
+    story = {}
+    try:
+        g = analyze_nba.analyze_game(s)
+        story = {'lead_changes': g['lead_changes'], 'max_lead': {g['home']: g['max_lead_home'], g['away']: g['max_lead_away']},
+                 'run': g.get('run'), 'comeback': g['comeback'], 'winshot': g.get('winshot'), 'tieshot': g.get('tieshot'),
+                 'moments': g['moments'], 'headline': g.get('headline'), 'recap': g.get('recap'), 'videos': g['videos'][:8],
+                 'flow': g.get('flow') or []}
+    except Exception:
+        story = {}
+    plays = []
+    for pl in reversed((s.get('plays') or [])[-15:]):
+        plays.append({'text': pl.get('text'), 'clock': (pl.get('clock') or {}).get('displayValue'), 'per': (pl.get('period') or {}).get('number'),
+                      'a': pl.get('awayScore'), 'h': pl.get('homeScore'), 'scoring': bool(pl.get('scoringPlay'))})
+    gi = s.get('gameInfo') or {}
+    venue = gi.get('venue') or {}
+    live = STATE.get('live') or {}
+    card = next((x for x in live.get('games', []) if x.get('gid') == gid), {})
+    return {'gid': gid, 'state': st.get('state'), 'detail': st.get('shortDetail') or st.get('detail'), 'date': hc.get('date'),
+            'teams': teams, 'compare': compare, 'players': players, 'story': story, 'plays': plays,
+            'feed': [e for e in live.get('feed', []) if e.get('gid') == gid][::-1],
+            'why': card.get('why', ''), 'tv': card.get('tv') or live_nba.networks(hc), 'cup': card.get('cup') or cup_for(gid),
+            'info': {'venue': venue.get('fullName'), 'city': ', '.join(x for x in ((venue.get('address') or {}).get('city'), (venue.get('address') or {}).get('state')) if x),
+                     'attendance': gi.get('attendance'), 'officials': [o.get('displayName') for o in gi.get('officials') or []]}}
+
+
+def cup_for(gid):
+    try:
+        with open(os.path.join(DATA, 'cache', 'nba_events.json')) as f:
+            ev = json.load(f).get(gid) or []
+        return ev[2] if len(ev) > 2 else ''
+    except Exception:
+        return ''
+
+
+def game_payload(gid):
+    now = time.time()
+    hit = GAME_CACHE.get(gid)
+    if hit and (hit[1].get('state') == 'post' or now - hit[0] < 15):
+        return hit[1]
+    path = os.path.join(DATA, 'cache', 'nba', gid + '.json')
+    if os.path.exists(path):
+        with open(path) as f:
+            s = json.load(f)
+    else:
+        s = live_nba.get(live_nba.B + 'summary?event=' + gid)
+    payload = build_game(s, gid)
+    if payload['state'] == 'post' and not os.path.exists(path):
+        os.makedirs(os.path.dirname(path), exist_ok=True)
+        with open(path, 'w') as f:
+            json.dump(s, f)
+    GAME_CACHE[gid] = (now, payload)
+    return payload
+
+
 class Handler(BaseHTTPRequestHandler):
     server_version = 'Rundown/1.0'
 
@@ -182,6 +280,16 @@ class Handler(BaseHTTPRequestHandler):
             data = STATE.get(path.split('/')[-1])
             body = json.dumps(data if data is not None else {}, separators=(',', ':')).encode()
             return self.send_body(200 if data is not None else 503, 'application/json', body)
+        if path.startswith('/api/game/'):
+            gid = path.rsplit('/', 1)[-1]
+            if not gid.isdigit():
+                return self.send_body(404, 'application/json', b'{}')
+            try:
+                body = json.dumps(game_payload(gid), separators=(',', ':')).encode()
+                return self.send_body(200, 'application/json', body)
+            except Exception as e:
+                log('game page failed:', gid, e)
+                return self.send_body(502, 'application/json', b'{}')
         if path == '/healthz':
             return self.send_body(200, 'text/plain', b'ok')
         if path == '/events':

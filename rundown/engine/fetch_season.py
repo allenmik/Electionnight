@@ -13,9 +13,13 @@ d=start
 while d<=end:
     sb=get(B+"scoreboard?dates="+d.strftime("%Y%m%d"))
     for e in sb['events']:
-        events[e['id']]=(d.isoformat(),e['status']['type']['state'])
+        cup=''
+        for n in e['competitions'][0].get('notes') or []:
+            h=n.get('headline') or ''
+            if 'nba cup' in h.lower(): cup='NBA Cup'+(' · '+h.split('-',1)[1].strip() if '-' in h else '')
+        events[e['id']]=(d.isoformat(),e['status']['type']['state'],cup)
     d+=datetime.timedelta(days=1)
-fin=[i for i,(dt,st) in events.items() if st=='post']
+fin=[i for i,(dt,st,*_) in events.items() if st=='post']
 print('events',len(events),'final',len(fin))
 def one(i):
     p=f'cache/nba/{i}.json'
