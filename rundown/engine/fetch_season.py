@@ -1,5 +1,5 @@
 import json,urllib.request,os,sys,datetime,concurrent.futures as cf
-from zoneinfo import ZoneInfo
+from tzcompat import ET
 B="https://site.api.espn.com/apis/site/v2/sports/basketball/nba/"
 def get(u,tries=3):
     for i in range(tries):
@@ -7,7 +7,7 @@ def get(u,tries=3):
         except Exception as e:
             if i==tries-1: raise
 os.makedirs('cache/nba',exist_ok=True)
-start=datetime.date.fromisoformat(os.environ.get('SEASON_START','2026-10-20')); end=datetime.datetime.now(ZoneInfo('America/New_York')).date()
+start=datetime.date.fromisoformat(os.environ.get('SEASON_START','2026-10-20')); end=datetime.datetime.now(ET).date()
 events={}
 d=start
 while d<=end:

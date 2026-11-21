@@ -9,9 +9,6 @@ where py >nul 2>nul && set "PY=py"
 if not defined PY (where python >nul 2>nul && set "PY=python")
 if not defined PY goto nopython
 
-echo  Getting ready (first time takes a minute)...
-%PY% -m pip install --quiet --disable-pip-version-check -r requirements.txt
-
 echo.
 echo  The Rundown is starting. Your browser will open in a few seconds.
 echo  KEEP THIS WINDOW OPEN while you use it. Close this window to stop.

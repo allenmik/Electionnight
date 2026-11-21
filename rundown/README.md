@@ -16,13 +16,8 @@ python3 server.py          # needs Python 3.9+, no packages to install
 # open http://localhost:8080
 ```
 
-On Windows (PowerShell), use the `py` launcher and install the time-zone data once:
-
-```powershell
-cd rundown
-py -m pip install -r requirements.txt
-py server.py
-```
+On Windows, double-click `Start-Rundown.bat` in this folder (or run `py server.py` in PowerShell).
+Nothing needs installing besides Python itself.
 
 The first start pulls the season from ESPN and builds the recap and preview (about a minute). After that:
 

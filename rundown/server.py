@@ -13,7 +13,6 @@ Env:   PORT (8080)  RUNDOWN_DATA (./data)  POLL_SECONDS (20)  IDLE_SECONDS (120)
 import hashlib, json, os, queue, subprocess, sys, threading, time, traceback
 from datetime import datetime, timezone
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
-from zoneinfo import ZoneInfo
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
 ENGINE = os.path.join(ROOT, 'engine')
@@ -22,13 +21,13 @@ DATA = os.path.abspath(os.environ.get('RUNDOWN_DATA', os.path.join(ROOT, 'data')
 PORT = int(os.environ.get('PORT', '8080'))
 POLL = int(os.environ.get('POLL_SECONDS', '20'))
 IDLE = int(os.environ.get('IDLE_SECONDS', '120'))
-ET = ZoneInfo('America/New_York')
 
 os.makedirs(DATA, exist_ok=True)
 os.chdir(DATA)                       # the engine reads and writes relative to the data folder
 os.environ['RUNDOWN_DATA'] = DATA
 sys.path.insert(0, ENGINE)
 import live_nba                      # noqa: E402  (needs the path set above)
+from tzcompat import ET              # noqa: E402  US Eastern, works without a time-zone database
 
 STATE = {'live': None, 'digest': None, 'preview': None, 'preview_for': None, 'maintained_for': None}
 CLIENTS = set()

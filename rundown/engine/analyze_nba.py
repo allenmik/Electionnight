@@ -1,7 +1,6 @@
 import json,glob,re,collections,statistics as st
 from datetime import datetime
-from zoneinfo import ZoneInfo
-ET=ZoneInfo('America/New_York')
+from tzcompat import ET
 def et_date(ts): return datetime.fromisoformat(ts.replace('Z','+00:00')).astimezone(ET).date().isoformat()
 def clk(c):
     c=c.strip()

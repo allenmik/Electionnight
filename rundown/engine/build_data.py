@@ -1,5 +1,5 @@
 import json, urllib.request, datetime
-from zoneinfo import ZoneInfo
+from tzcompat import ET
 B="https://site.api.espn.com/apis/"
 def get(u):
     return json.load(urllib.request.urlopen(u, timeout=30))
@@ -18,7 +18,7 @@ for ch in st['children']:
           'diff':float(s['differential']),'streak':s['streak'],'home':s['Home'],'road':s['Road'],'l10':s['Last Ten Games'],
           'seed':int(float(s['playoffSeed'])),'conf_rec':s.get('vs. Conf.')})
 games=[]
-today=datetime.datetime.now(ZoneInfo('America/New_York')).date()
+today=datetime.datetime.now(ET).date()
 for d in range(-3,2):
     day=today+datetime.timedelta(days=d)
     sb=get(B+"site/v2/sports/basketball/nba/scoreboard?dates="+day.strftime("%Y%m%d"))
